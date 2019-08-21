@@ -1,0 +1,30 @@
+package mwPages;
+
+import baseClass.BaseClass;
+import baseClass.PopupWindows;
+
+public class MobileTermsPage extends PopupWindows
+{
+	public MobileTermsPage(BaseClass obj) {
+		// TODO Auto-generated constructor stub
+		super(obj);
+		
+	}
+	public static final String lbl_Mobile_Term = "Mobile Term #xpath=//h2[contains(text(),'MOBILE MESSAGING TERMS AND CONDITIONS')]";
+	
+	public void verifyMobileTermsPage()
+	{
+		try
+		{
+			waitForElement(lbl_Mobile_Term);
+			verifyElement(lbl_Mobile_Term);
+		}
+		catch(Exception e)
+		{
+			testStepFailed(e.toString());
+		}	
+		
+	}
+	
+	
+}

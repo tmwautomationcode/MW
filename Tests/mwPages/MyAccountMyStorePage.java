@@ -1,0 +1,54 @@
+package mwPages;
+
+import java.util.concurrent.TimeUnit;
+
+import org.openqa.selenium.By;
+
+import baseClass.BaseClass;
+import baseClass.PopupWindows;
+
+public class MyAccountMyStorePage extends PopupWindows
+{
+	public MyAccountMyStorePage(BaseClass obj) {
+		// TODO Auto-generated constructor stub
+		super(obj);
+		
+	}
+	
+	public static final String btn_changeStore="change store option#xpath=//*[@id='main']//a[text()='Change Store']";
+	public static final String storeNameInMyStorePage="Store Name In My Store Page#xpath=//*[contains(@id,'store-details-container')]/h1";
+	public static final String btn_ChangeStore="change store option#xpath=//*[@id='makeThisMyStore']";
+	public void changeOptionInFindStore()
+	{
+		clickOn(btn_changeStore);
+	}
+	public boolean isStoreDetailsDisplayedInMyStorePage(){
+		boolean flag = false;
+		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		try{
+			if(driver.findElement(By.xpath("//*[contains(@id,'store-details-container')]")).isDisplayed())
+				flag =true;
+		}catch(Exception e){}
+		finally{
+			driver.manage().timeouts().implicitlyWait(implicitlyWaitTime, TimeUnit.SECONDS);
+		}
+		return flag;
+	}
+	public String getStoreNameInMyStorePage(){
+		String storeName="";
+		storeName=getText(storeNameInMyStorePage);
+		return storeName;
+	}
+	public void clickOnChangeStoreButtonInMyStorePage(){
+		try {
+			waitTime(2);
+			if (driver.findElement(By.xpath("//*[@id='makeThisMyStore']")).isDisplayed()) {
+				clickOn(btn_ChangeStore);	
+			}
+		} catch (Exception e) {
+			testStepFailed("Change Store button is not displayed");
+		}
+		
+	}
+
+}

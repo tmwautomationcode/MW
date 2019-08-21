@@ -1,0 +1,117 @@
+package mwPages;
+
+import java.util.List;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
+
+import baseClass.BaseClass;
+import baseClass.PopupWindows;
+
+public class SearchResultsPage extends PopupWindows
+{
+	public SearchResultsPage(BaseClass obj) {
+		
+		super(obj);
+
+	}
+	public static final String drp_OrderBy="Products Order By Filter Dropdown #xpath=//div[contains(@id,'topNavigationHeader')]//select[contains(@id,'orderBy')]";
+
+	public void verifySearchResultsPageisDisplayedwithProducts()
+	{
+		try {
+			waitTime(2);
+			if (driver.findElement(By.xpath("//div[contains(@id,'widget_breadcrumb')]//h1//span[contains(@class,'breadcrumb')]")).isDisplayed()) 
+			{
+				String SearchResultsBreadCrumb = driver.findElement(By.xpath("//div[contains(@id,'widget_breadcrumb')]//h1//span[contains(@class,'breadcrumb')]")).getText();
+				if (SearchResultsBreadCrumb.contains("SEARCH RESULTS: PRODUCTS")) {
+					testStepPassed("Search Results Page is displayed");
+					if (driver.findElement(By.xpath("//ul[contains(@id,'products')]//li")).isDisplayed()) {
+						testStepPassed("Products are listed in Search Results Page");
+					}
+				}
+			}
+		} 
+		catch (Exception e) 
+		{
+			testStepFailed("Search Results page is not displayed or Products are not displayed in Search Results page");
+		}
+	}	
+
+
+
+	public void SelectProductsSortByDropdownValue(String ProductsSortBy)
+	{
+		try {
+			waitTime(3);
+			if (driver.findElement(By.xpath("//div[contains(@id,'topNavigationHeader')]//select[contains(@id,'orderBy')]")).isDisplayed()) 
+			{
+				selectFromDropdown(drp_OrderBy, ProductsSortBy);
+			}
+		} 
+		catch (Exception e) 
+		{
+			testStepFailed("Products Sort By Filter Dropdown is not displayed");
+		}
+	}	
+
+
+
+
+	public void CheckProductPriceisDisplayedorPricePendingTextisDisplayed()
+	{
+		try {
+			waitTime(5);
+			List<WebElement> Products = driver.findElements(By.xpath("//ul[contains(@id,'products')]//li"));
+			int ProductsCount = Products.size();
+			testStepPassed("Total Products Count : "+ProductsCount);
+			for (int i = 1; i <= ProductsCount; i++) {
+				if (driver.findElement(By.xpath("//ul[contains(@id,'products')]//li//div[contains(@id,'product_price')]//p[contains(@id,'offerPrice')]")).isDisplayed()) 
+				{
+					String Price = driver.findElement(By.xpath("//ul[contains(@id,'products')]//li//div[contains(@id,'product_price')]//p[contains(@id,'offerPrice')]")).getText();
+					System.out.println("Price : "+Price);
+					if (!Price.contains("Price pending")) 
+					{
+						testStepPassed("Product Price is displayed");
+					}
+					else if (Price.contains("Price pending")) 
+					{
+						WebElement ele = driver.findElement(By.xpath("(//ul[contains(@id,'products')]//li//div[contains(@class,'prod-info')]/a[contains(@class,'product-name')])["+i+"]")); 
+						Actions action = new Actions(driver);
+						action.moveToElement(ele).build().perform();
+		                String ProductName = driver.findElement(By.xpath("(//ul[contains(@id,'products')]//li//div[contains(@class,'prod-info')]/a[contains(@class,'product-name')])["+i+"]")).getText();
+						testStepWarning("Warning : Price Pending is displayed for the product : "+ProductName);
+					}
+				}
+
+				else 
+				{
+					WebElement ele = driver.findElement(By.xpath("(//ul[contains(@id,'products')]//li//div[contains(@class,'prod-info')]/a[contains(@class,'product-name')])["+i+"]")); 
+					Actions action = new Actions(driver);
+					action.moveToElement(ele).build().perform();
+	                String ProductName = driver.findElement(By.xpath("(//ul[contains(@id,'products')]//li//div[contains(@class,'prod-info')]/a[contains(@class,'product-name')])["+i+"]")).getText();
+					testStepWarning("Warning : Product Price is not displayed for the product : "+ProductName);
+				}
+			}
+
+		} 
+		catch (Exception e) 
+		{
+			testStepFailed("Product price is not displayed");
+		}
+	}	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}

@@ -1,0 +1,94 @@
+package mwPages;
+
+import baseClass.BaseClass;
+import baseClass.PopupWindows;
+
+public class AboutMensWearhousePage extends PopupWindows
+{
+	
+	public AboutMensWearhousePage(BaseClass obj) {
+		// TODO Auto-generated constructor stub
+		super(obj);
+		
+	}
+
+
+	public static final String lbl_AboutMensWearHouse = "About Men's Wear House #xpath=//h2[contains(text(),\"About Men's Wearhouse\")]";
+	public static final String txt_AboutUs="About Us #xpath=//*[@class='sub-category']//*[text()='About Us']";
+	public static final String txt_Guydlines="Guydlines #xpath=//h1[contains(text(),'Guy')]";
+	public static final String txt_Prestylelooks="Pre-Style Loks #xpath=//h2[contains(text(),'Pre-Styled Looks')]";
+	public static final String txt_Allbrands="All Brands #xpath=//div[@id='main']";
+	
+	
+	
+	
+	
+	
+	
+	
+	public void verifyAboutMensWearHousePage()
+	{
+		try
+		{
+			waitForElement(lbl_AboutMensWearHouse);
+			verifyElement(lbl_AboutMensWearHouse);		
+		}
+		catch(Exception e)
+		{
+			testStepFailed(e.toString());
+		}
+
+	}
+	public void verifyAboutUsPage()
+	{
+		try
+		{
+			waitForElement(txt_AboutUs);
+			verifyElement(txt_AboutUs);		
+		}
+		catch(Exception e)
+		{
+			testStepFailed(e.toString());
+		}
+	}
+	public void verifyGuydLinesPage()
+	{
+		waitTime(5);
+		try
+		{
+			waitForElement(txt_Guydlines);
+			verifyElement(txt_Guydlines);		
+		}
+		catch(Exception e)
+		{
+			testStepFailed(e.toString());
+		}
+	}
+	public void verifyPreStyledLooksPage()
+	{
+		waitTime(5);
+		try
+		{
+			waitForElement(txt_Prestylelooks);
+			verifyElement(txt_Prestylelooks);		
+		}
+		catch(Exception e)
+		{
+			testStepFailed(e.toString());
+		}
+	}
+	public void verifyAllBrandsPage()
+	{
+		waitTime(5);
+		try
+		{
+			waitForElement(txt_Allbrands);
+			verifyElement(txt_Allbrands);		
+		}
+		catch(Exception e)
+		{
+			testStepFailed(e.toString());
+		}
+	}
+	
+}

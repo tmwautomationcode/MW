@@ -1,0 +1,232 @@
+package scenarios;
+
+import baseClass.BaseClass;
+import baseClass.PopupWindows;
+import mwPages.DepartmentNavigation;
+import mwPages.ProductDescriptionPage;
+import mwPages.ProductGridPage;
+import mwPages.ShoppingCartPage;
+import mwPages.HomePage;
+
+public class PriceComparisonTest extends PopupWindows{
+
+	private BaseClass obj;
+
+	private ShoppingCartPage shoppingCartPage;
+	private ProductDescriptionPage productDescriptionPage;
+	private ProductGridPage productGridPage;
+	private DepartmentNavigation departmentNavigation;
+	private HomePage homePage;
+
+	public PriceComparisonTest(BaseClass obj) {
+		super(obj);
+		this.obj=obj;
+	}
+
+	public void createObjects(String browser){
+		obj.driver=driver;
+		obj.currentBrowser=browser;
+
+		departmentNavigation = new	DepartmentNavigation(obj);
+		productDescriptionPage = new	ProductDescriptionPage(obj);
+		productGridPage = new	ProductGridPage(obj);
+		shoppingCartPage = new	ShoppingCartPage(obj);
+		homePage= new HomePage(obj);
+	}
+
+	public void destroyObjects(){
+		departmentNavigation = null;
+		productDescriptionPage = null;
+		productGridPage = null;
+		shoppingCartPage = null;
+		homePage= null;
+	}
+	
+	private String pgpSelectedProductPrice, pgpSelectedProductname,PDPProductname,PDPProductPrice,ShoppingCartProductname,ShoppingCartProductPrice;
+	
+	public void priceComparisonTestScenario(String machineName,String host,String port,String browser,String os,String browserVersion,String osVersion, String tcId){
+		try
+		{
+			
+			openBrowser(machineName, host, port, browser, os, browserVersion, osVersion);
+			createObjects(browser);
+			
+			
+			/*if (browser.equalsIgnoreCase("Chrome")||browser.equalsIgnoreCase("Firefox")) {
+				
+				getJSESSIONIDOnceBrowserInitiated();
+				
+				getCLONEIDOnceBrowserInitiated();
+				
+			}*/
+
+			
+
+			if (browser.equalsIgnoreCase("Safari")) 
+			{
+				verifySafariUSFlagSelected();
+				waitTime(5);
+			} 
+
+			else 
+			{
+				verifyUSFlagSelected();
+			}
+
+			//clickOnBackToTopLinkInFooter();
+			
+			homePage.ClickonHomePageLogo();
+			
+			
+
+			if (browser.equalsIgnoreCase("Firefox")) 
+			{
+				homePage.verifyBrowserOutdatedMessageisDisplayedAndClosed();
+			}
+
+			
+			if (browser.equalsIgnoreCase("InternetExplorer")) 
+			{
+
+				shoppingCartPage.checkingtheshoppingbagcountemptyandifnotemptyingtheshoppinginIE();
+
+			}
+			else 
+			{
+
+				shoppingCartPage.checkingtheshoppingbagcountemptyandifnotemptyingtheshopping();
+
+			}
+			
+			//homePage.ClickonHomePageLogo();	
+			
+			
+			//departmentNavigation.clickOnDepartmentSubCategoryOrPromoLink(retrieve("DepartmentName"), retrieve("SubCategoryName"));
+			
+			departmentNavigation.selectCategoryFromDepartmentMenu(retrieve("DepartmentName"),retrieve("SubCategoryName"));
+			
+			productGridPage.VerifyProductslistedinPGPIfNotRefreshthePage();
+			
+			pgpSelectedProductname=productGridPage.getProductNameFromProductGridPage("Productname");
+			
+			testStepPassed("PGP Selected Product Name : "+pgpSelectedProductname);	
+			
+			pgpSelectedProductPrice=productGridPage.getProductPriceFromProductGridPage("Productprice");
+			
+			testStepPassed("PGP Selected Product Price : "+pgpSelectedProductPrice);
+			
+			productGridPage.selectProductInProductGridPage(retrieve("ProductName"));
+			
+			PDPProductname=productDescriptionPage.getProductNameFromProductDescriptionPage("Productname");
+			
+			testStepPassed("PDP Selected Product Name : "+PDPProductname);	
+			
+			PDPProductPrice=productDescriptionPage.getProductPriceFromProductDescriptionPage("Productprice");
+			
+			System.out.println("PDP Selected Product Price : "+PDPProductPrice);
+			
+			testStepPassed("PDP Selected Product Price : "+PDPProductPrice);
+			
+			
+			if(PDPProductname.equalsIgnoreCase(pgpSelectedProductname))
+			{
+				
+				testStepPassed("Product name in PGP & PDP are same");
+				
+			}
+			else
+			{
+				testStepFailed("Product name in PGP & PDP are not same");
+			}	
+			
+			
+			if(PDPProductPrice.equalsIgnoreCase(pgpSelectedProductPrice))
+			{
+				
+				testStepPassed("Product price in PGP & PDP are same");
+				
+			}
+			else
+			{
+				testStepFailed("Product price in PGP & PDP are not same");
+			}	
+			
+			productDescriptionPage.selectSizeFromProductDescriptionPagenew(retrieve("ProductSize"));
+			
+			productDescriptionPage.clickPDPAddtoShoppingBagButton();
+			
+			
+			
+			if (browser.equalsIgnoreCase("InternetExplorer")) 
+			{
+
+				homePage.RegisteredUserProceedtoCheckoutinIE();
+
+			}
+			else 
+			{
+
+				viewshoppingbag();
+				//clickonChromeFirefoxCheckout();
+
+			}
+			
+			ShoppingCartProductname = shoppingCartPage.getProductNameFromShoppingCartPage("Productname");
+			
+			testStepPassed("Shopping Cart Product Name : "+ShoppingCartProductname);
+			
+			ShoppingCartProductPrice = shoppingCartPage.getProductPriceFromShoppingCartPage("Productprice");
+			
+			testStepPassed("Shopping Cart Product Price : "+ShoppingCartProductPrice);
+			
+			if(ShoppingCartProductname.equalsIgnoreCase(pgpSelectedProductname) && ShoppingCartProductname.equalsIgnoreCase(PDPProductname))
+			{
+				 
+				testStepPassed("Product name in Shopping Cart are same as in PGP & PDP");
+				
+			}
+			else
+			{
+				testStepFailed("Product name in Shopping Cart are not same as in PGP & PDP");
+			}	
+			
+			
+			if(ShoppingCartProductPrice.equalsIgnoreCase(pgpSelectedProductPrice) && ShoppingCartProductPrice.equalsIgnoreCase(PDPProductPrice))
+			{
+				
+				testStepPassed("Product price in Shopping Cart are same as in PGP & PDP");
+				
+			}
+			else
+			{
+				testStepFailed("Product price in Shopping Cart are not same as in PGP & PDP");
+			}
+			
+			
+			shoppingCartPage.removeAllItemsfromShoppingCart();
+			
+			homePage.ClickonHomePageLogo();
+			
+
+		}
+		catch(Exception e)
+		{
+			testStepFailed("Exception Occured:" +e);
+		}
+		finally
+		{
+			if(	departmentNavigation.testCaseExecutionStatus ||
+					productDescriptionPage.testCaseExecutionStatus ||
+					productGridPage.testCaseExecutionStatus ||
+					shoppingCartPage.testCaseExecutionStatus){
+				this.testCaseExecutionStatus=true;
+			}
+			destroyObjects();
+			driver.quit();
+		}
+		testStepInfo("");
+		testStepInfo("*******************************");
+		testStepInfo("Test Execution Completed");
+		testStepInfo("*******************************");
+	}
+}

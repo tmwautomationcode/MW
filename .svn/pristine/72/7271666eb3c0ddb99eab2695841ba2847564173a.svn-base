@@ -1,0 +1,271 @@
+package scenarios;
+
+import baseClass.BaseClass;
+import baseClass.PopupWindows;
+import mwPages.FindStorePage;
+import mwPages.MyAccountMySizePage;
+import mwPages.MyAccountMyStorePage;
+import mwPages.MyAccountPage;
+import mwPages.HomePage;
+
+public class StoreFinderMemberTest extends PopupWindows{
+	private BaseClass obj;
+
+	private FindStorePage findStorePage;
+	private MyAccountMySizePage myAccountMySizePage;
+	private MyAccountPage myAccountPage;
+	private MyAccountMyStorePage myAccountMyStorePage;
+	private HomePage homePage;
+	//private String store1 = null, store2 = null;
+
+	public StoreFinderMemberTest(BaseClass obj) {
+		super(obj);
+		this.obj=obj;
+	}
+
+	public void createObjects(String browser){
+		obj.driver=driver;
+		obj.currentBrowser=browser;
+
+		findStorePage = new	FindStorePage(obj);
+		myAccountMySizePage = new	MyAccountMySizePage(obj);
+		myAccountPage=new MyAccountPage(obj);
+		myAccountMyStorePage = new MyAccountMyStorePage(obj);
+		homePage= new HomePage(obj);
+	}
+
+
+	public void destroyObjects(){
+		findStorePage = null;
+		myAccountMySizePage = null;
+		myAccountPage= null;
+		myAccountMyStorePage = null;
+		homePage= null;
+	}
+
+
+	private String selectedStoreName;
+	public void StoreFinderMemberTestScenario(String machineName,String host,String port,String browser,String os,String browserVersion,String osVersion, String tcId){
+		try
+		{
+			
+			openBrowser(machineName, host, port, browser, os, browserVersion, osVersion);
+			createObjects(browser);
+			
+			
+			if (browser.equalsIgnoreCase("Chrome")||browser.equalsIgnoreCase("Firefox")) 
+			{
+				
+				getJSESSIONIDOnceBrowserInitiated();
+				
+				getCLONEIDOnceBrowserInitiated();
+				
+			}
+
+			
+
+			if (browser.equalsIgnoreCase("Safari")) 
+			{
+				verifySafariUSFlagSelected();
+				waitTime(5);
+			} 
+
+			else 
+			{
+				verifyUSFlagSelected();
+			}
+
+			//clickOnBackToTopLinkInFooter();
+			
+			homePage.ClickonHomePageLogo();
+			
+			
+
+			if (browser.equalsIgnoreCase("Firefox")) 
+			{
+				homePage.verifyBrowserOutdatedMessageisDisplayedAndClosed();
+			}
+
+
+			signInToApp(retrieve("UserName"),retrieve("Password"));
+
+			homePage.ClickonHomePageLogo();
+			
+			clickOnFindStoreLink();
+			
+			clickOnEditStoreLink();
+			
+			findStorePage.enterSearchStoreTextboxValue(retrieve("Zipcode1"));
+			
+			findStorePage.clickOnFindButtonInFindStore();
+
+			if(findStorePage.verifySearchStoreResultsDisplayed()){
+				
+				if (browser.equalsIgnoreCase("Safari")) {
+					
+					findStorePage.selectFirstStoreFromSearchListDisplayed();
+					
+				}
+				
+				else 
+				{
+					//findStorePage.scrollUpInFindStorePage();
+					
+					findStorePage.selectFirstStoreFromSearchListDisplayed();
+					
+					//findStorePage.scrollUpInFindStorePage();
+				}
+				
+				
+				findStorePage.verfiyMapDisplayedInMakeThisMyStorePage();
+				
+				selectedStoreName=findStorePage.clickOnMakeThisMyStore_New();
+
+				findStorePage.clickOnMakeThisMyStoreMessageCloseLink();
+				
+				
+				homePage.ClickonHomePageLogo();
+
+				if (browser.equalsIgnoreCase("InternetExplorer")) {
+
+					homePage.ClickonIEAccountHeaderlinkgreetinglink();
+
+				}
+				
+				else if (browser.equalsIgnoreCase("Safari")) {
+					
+					homePage.ClickonSafariHeaderlinkgreetinglink();
+					
+					waitTime(2);
+				}
+				
+				else {
+
+					homePage.ClickonHeaderlinkgreetinglink();
+
+				}
+
+				myAccountPage.clickMyStoreLinkinMyAccountPage();
+
+				if(myAccountMyStorePage.isStoreDetailsDisplayedInMyStorePage())
+				{
+					
+					if(myAccountMyStorePage.getStoreNameInMyStorePage().equalsIgnoreCase(selectedStoreName)){
+						
+						testStepPassed("New store is updated in user profile");
+						
+					}
+					else{
+						testStepFailed("New store is not updated in user profile");						
+					}
+				}
+				else
+				{
+					testStepFailed("No Store Details are available in Account Info - My Store Page");
+				}
+
+				myAccountMyStorePage.clickOnChangeStoreButtonInMyStorePage();
+				
+				findStorePage.enterSearchStoreTextboxValue(retrieve("Zipcode2"));
+				
+				findStorePage.clickOnFindButtonInFindStore();
+
+				if(findStorePage.verifySearchStoreResultsDisplayed())
+				{
+
+					findStorePage.selectFirstStoreFromSearchListDisplayed();
+
+					findStorePage.verfiyMapDisplayedInMakeThisMyStorePage();
+
+					selectedStoreName=findStorePage.clickOnMakeThisMyStore_New();
+
+					findStorePage.clickOnMakeThisMyStoreMessageCloseLink();
+					
+					homePage.ClickonHomePageLogo();
+
+					if (browser.equalsIgnoreCase("InternetExplorer")) {
+
+						homePage.ClickonIEAccountHeaderlinkgreetinglink();
+
+					} 
+					
+					else if (browser.equalsIgnoreCase("Safari")) {
+						
+						homePage.ClickonSafariHeaderlinkgreetinglink();
+						
+						waitTime(2);
+					}
+					
+					else {
+
+						homePage.ClickonHeaderlinkgreetinglink();
+
+					}
+
+					myAccountPage.clickMyStoreLinkinMyAccountPage();
+
+					if(myAccountMyStorePage.isStoreDetailsDisplayedInMyStorePage()){
+						
+						if(myAccountMyStorePage.getStoreNameInMyStorePage().equalsIgnoreCase(selectedStoreName)){
+							
+							testStepPassed("New store is updated in user profile");
+							
+						}
+						else
+						{
+							testStepFailed("New store is not updated in user profile");						
+						}
+					}
+					else{
+						testStepFailed("No Store Details are available in Account Info - My Store Page");
+					}
+				}
+			}
+			else {
+				testStepFailed("Store Search Results are not displayed");
+			}
+			
+			homePage.ClickonHomePageLogo();
+			
+			if (browser.equalsIgnoreCase("Chrome") || browser.equalsIgnoreCase("Firefox")) {
+				
+				homePage.ClickonSignoutinHeaderlinkgreetinglink();
+				
+			} 
+			
+			else if (browser.equalsIgnoreCase("Safari")) {
+				
+				homePage.ClickonSafariSignOutlink();
+				
+			}
+			
+			else {
+				
+				homePage.ClickonIESignoutinHeaderlinkgreetinglink();
+				
+			}
+			
+			homePage.verifyUserLoggedOutSuccessfully();
+			
+		}
+		catch(Exception e){
+			
+			testStepFailed("Exception occured:"+e);
+			
+		}
+		finally{
+			if(findStorePage.testCaseExecutionStatus ||
+					myAccountPage.testCaseExecutionStatus ||
+					myAccountMyStorePage.testCaseExecutionStatus ||
+					myAccountMySizePage.testCaseExecutionStatus){
+				this.testCaseExecutionStatus=true;
+			}
+			destroyObjects();
+			driver.quit();
+		}
+		testStepInfo("");
+		testStepInfo("*******************************");
+		testStepInfo("Test Execution Completed");
+		testStepInfo("*******************************");
+	}
+}

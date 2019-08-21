@@ -1,0 +1,247 @@
+package scenarios;
+
+import mwPages.ContactUsPage;
+import mwPages.MyAccountPage;
+import mwPages.PerfectFitRewardsPage;
+import mwPages.StoreLocatorPage;
+import baseClass.BaseClass;
+import baseClass.PopupWindows;
+import mwPages.HomePage;
+import mwPages.ChatPage;
+
+
+public class HeaderLinksTest extends PopupWindows{
+
+	private BaseClass obj;
+
+	private PopupWindows popupWindows;
+	private StoreLocatorPage storeLocatorPage;
+	private ContactUsPage contactUsPage;
+	private MyAccountPage myAccountPage;
+	private PerfectFitRewardsPage perfectfitRewardsPage;
+	private HomePage homePage;
+	private ChatPage chatPage;
+
+	public HeaderLinksTest(BaseClass obj) {
+		super(obj);
+		this.obj=obj;
+	}
+
+	public void createObjects(String browser){
+		obj.driver=driver;
+		obj.currentBrowser=browser;
+
+		contactUsPage = new	ContactUsPage(obj);
+		myAccountPage = new	MyAccountPage(obj);
+		perfectfitRewardsPage = new	PerfectFitRewardsPage(obj);
+		storeLocatorPage = new	StoreLocatorPage(obj);
+		popupWindows=new PopupWindows(obj);
+		homePage= new HomePage(obj); 
+		chatPage = new ChatPage(obj);
+	}
+
+
+	public void destroyObjects(){
+
+
+		contactUsPage = null;
+		myAccountPage = null;
+		perfectfitRewardsPage = null;
+		storeLocatorPage = null;
+		popupWindows=null;
+		homePage= null;
+		chatPage = null;
+	}
+
+
+	public void headerLinksTestScenario(String machineName,String host,String port,String browser,String os,String browserVersion,String osVersion, String tcId) {
+		try{
+
+			openBrowser(machineName, host, port, browser, os, browserVersion, osVersion);
+			createObjects(browser);
+
+			if (browser.equalsIgnoreCase("Chrome")||browser.equalsIgnoreCase("Firefox")) {
+
+				getJSESSIONIDOnceBrowserInitiated();
+
+				getCLONEIDOnceBrowserInitiated();
+
+			}
+
+
+			String parentWindowHandle = driver.getWindowHandle();
+
+			if (browser.equalsIgnoreCase("Safari")) 
+			{
+				verifySafariUSFlagSelected();
+
+				waitTime(5);
+			} 
+
+			else 
+			{
+				verifyUSFlagSelected();
+			}
+
+			//clickOnBackToTopLinkInFooter();
+
+			homePage.ClickonHomePageLogo();
+
+
+
+			if (browser.equalsIgnoreCase("Firefox")) 
+			{
+				homePage.verifyBrowserOutdatedMessageisDisplayedAndClosed();
+			}
+
+
+			clickOnSignIn();
+
+			popupWindows.verifySignInOverLay();
+
+			popupWindows.closeSignInOverlay();
+
+
+			clickOnFindaStore();
+
+			storeLocatorPage.verifyStoreLocatorPage();
+
+			if (browser.equalsIgnoreCase("InternetExplorer")) {
+
+				ClickonIEContactUsHeaderLink_new();
+
+			}
+
+			else if (browser.equalsIgnoreCase("Safari")) {
+
+				clickonSafariContactUsHeaderLink();
+			}
+
+			else {
+
+				clickOnContactUsHeaderLink_new();
+
+			}
+
+			contactUsPage.verifyContactUsPage();
+
+
+			if (browser.equalsIgnoreCase("InternetExplorer")) {
+
+				ClickonIEChatHeaderLink_new();
+
+			}
+
+			else if (browser.equalsIgnoreCase("Safari")) {
+
+				clickonSafariChatHeaderLink();
+
+			}
+
+			else {
+
+				clickOnChatHeaderLink_new();
+
+			}
+
+			chatPage.verifyChatPage();
+
+
+			if (browser.equalsIgnoreCase("InternetExplorer")) {
+
+				URLNavigateBack();
+
+			}
+
+			else {
+
+				switchToWindowUsingWindowHandle(parentWindowHandle);
+
+			}
+
+
+
+
+			if (browser.equalsIgnoreCase("InternetExplorer")) {
+
+				ClickonIEEmailUsHeaderLink_new();
+
+			}
+
+			else if (browser.equalsIgnoreCase("Safari")) {
+
+				clickonSafariEmailHeaderLink();
+			}
+
+			else {
+
+				clickOnEmailHeaderLink_new();
+
+			}
+
+			contactUsPage.verifyContactUsPage();
+
+			homePage.ClickonHomePageLogo();
+
+			popupWindows.signInToApp(retrieve("UserName"),retrieve("Password"));
+
+			if (browser.equalsIgnoreCase("InternetExplorer")) {
+
+				homePage.ClickonIEAccountHeaderlinkgreetinglink();
+
+			} 
+
+			else if (browser.equalsIgnoreCase("Safari")) {
+				homePage.ClickonSafariHeaderlinkgreetinglink();
+			}
+
+			else {
+
+				homePage.ClickonHeaderlinkgreetinglink();
+
+			}
+
+			//clickOnAccountInformation();
+			myAccountPage.verifyMyAccountPage();
+
+			//9.Click on the 'Join Perfect Fit Rewards' link to verify that the PF section of prfile is displayed.
+			myAccountPage.clickPerfectFitRewardsLink();
+
+			myAccountPage.verifyPerfectFitRewardsTabinAccountDashboardisdisplayed();
+
+			if (browser.equalsIgnoreCase("Chrome") || browser.equalsIgnoreCase("Firefox")) {
+				homePage.ClickonSignoutinHeaderlinkgreetinglink();
+			} 
+			else if (browser.equalsIgnoreCase("Safari")) {
+				homePage.ClickonSafariSignOutlink();
+			}
+			else {
+				homePage.ClickonIESignoutinHeaderlinkgreetinglink();
+			}
+
+			homePage.verifyUserLoggedOutSuccessfully();
+
+
+		}
+		catch(Exception e)
+		{
+			testStepFailed("Exception occured: "+e.toString());
+		}
+		finally
+		{
+			if(contactUsPage.testCaseExecutionStatus || 
+					myAccountPage.testCaseExecutionStatus || 
+					perfectfitRewardsPage.testCaseExecutionStatus || 
+					storeLocatorPage.testCaseExecutionStatus || 
+					popupWindows.testCaseExecutionStatus){
+				this.testCaseExecutionStatus=true;
+			}
+			driver.quit();
+			destroyObjects();
+		}
+		testStepInfo("");
+		testStepInfo("*******************************");
+		testStepInfo("Test Execution Completed");
+		testStepInfo("*******************************");
+	}
+}

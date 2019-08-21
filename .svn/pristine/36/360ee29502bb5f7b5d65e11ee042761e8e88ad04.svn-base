@@ -1,0 +1,290 @@
+package scenarios;
+
+import baseClass.BaseClass;
+import baseClass.PopupWindows;
+import mwPages.CheckOutPage;
+import mwPages.ClassicGiftCardPage;
+import mwPages.GiftCardsPage;
+import mwPages.OrderConfirmationPage;
+import mwPages.ProductDescriptionPage;
+import mwPages.ShoppingCartPage;
+import mwPages.HomePage;
+
+
+
+public class PhysicalGiftCardOrderGuestTest extends PopupWindows{
+
+	private BaseClass obj;
+
+	private OrderConfirmationPage orderConfirmationPage;
+	private ShoppingCartPage shoppingcartPage;
+	private CheckOutPage checkoutPage;
+	private ClassicGiftCardPage classicGiftcardPage;
+	private GiftCardsPage giftcardPage;
+	private ProductDescriptionPage productDescriptionPage;
+	private HomePage homePage;
+	
+
+	private String dynamicUsername=null,username=null;
+
+	public PhysicalGiftCardOrderGuestTest(BaseClass obj) {
+		super(obj);
+		this.obj=obj;
+	}
+
+	public void createObjects(String browser){
+		obj.driver=driver;
+		obj.currentBrowser=browser;
+
+		checkoutPage = new	CheckOutPage(obj);
+		classicGiftcardPage = new	ClassicGiftCardPage(obj);
+		giftcardPage = new	GiftCardsPage(obj);
+		orderConfirmationPage = new	OrderConfirmationPage(obj);
+		shoppingcartPage = new	ShoppingCartPage(obj);
+		productDescriptionPage = new ProductDescriptionPage(obj);
+		homePage= new HomePage(obj);
+	}
+
+	
+	public void destroyObjects(){
+		checkoutPage = null;
+		classicGiftcardPage = null;
+		giftcardPage = null;
+		orderConfirmationPage = null;
+		shoppingcartPage = null;
+		productDescriptionPage = null;
+		homePage= null;
+	}
+	
+	
+	public void PhysicalGiftCardOrderGuestTestTestScenario(String machineName,String host,String port,String browser,String os,String browserVersion,String osVersion, String tcId){
+		try
+		{
+			
+			openBrowser(machineName, host, port, browser, os, browserVersion, osVersion);
+			createObjects(browser);
+			
+			if (browser.equalsIgnoreCase("Chrome")||browser.equalsIgnoreCase("Firefox")) {
+				
+				getJSESSIONIDOnceBrowserInitiated();
+				
+				getCLONEIDOnceBrowserInitiated();
+				
+			}
+
+			
+			
+
+			if (browser.equalsIgnoreCase("Safari")) 
+			{
+				verifySafariUSFlagSelected();
+				waitTime(5);
+			} 
+
+			else 
+			{
+				verifyUSFlagSelected();
+			}
+
+			//clickOnBackToTopLinkInFooter();
+			
+			homePage.ClickonHomePageLogo();
+			
+			
+
+			if (browser.equalsIgnoreCase("Firefox")) 
+			{
+				homePage.verifyBrowserOutdatedMessageisDisplayedAndClosed();
+			}
+
+			
+			if (browser.equalsIgnoreCase("InternetExplorer")) 
+			{
+
+				shoppingcartPage.checkingtheshoppingbagcountemptyandifnotemptyingtheshoppinginIE();
+
+			}
+			
+			else if (browser.equalsIgnoreCase("Safari")) 
+			{
+				shoppingcartPage.checkingtheSafarishoppingbagcountemptyandifnotemptyingtheshopping();
+			}
+			
+			else 
+			{
+
+				shoppingcartPage.checkingtheshoppingbagcountemptyandifnotemptyingtheshopping();
+
+			}
+					
+			//homePage.ClickonHomePageLogo();
+						
+			homePage.ClickonGiftCardsFooterLink();
+						
+			giftcardPage.clickPhysicalGiftCardCustomizeButton();
+			
+			giftcardPage.fillPhysicalGiftCardDetails(retrieve("ReceipientName"), retrieve("SenderName"), retrieve("GiftAmount"), retrieve("GiftMessage"));
+			
+			/*giftcardPage.fillPhysicalGiftCardDetails1(retrieve("ReceipientName"), retrieve("SenderName"));
+			
+			giftcardPage.selectPhysicalGiftCardAmount(retrieve("GiftAmount"));
+			
+			giftcardPage.fillPhysicalGiftCardDetails2(retrieve("GiftMessage"));*/
+			
+			if (browser.equalsIgnoreCase("Firefox")) 
+			{
+
+				homePage.mouseoverApplicationLogo();
+
+			}
+			
+			giftcardPage.clickPhysicalGiftCardAddToShoppingBagButton();
+			
+			//homePage.ClickonHomePageLogo();
+			
+			if (browser.equalsIgnoreCase("InternetExplorer")) 
+			{
+
+				homePage.clickProceedtoCheckoutMiniBaginIE();
+
+			}
+			else {
+
+				//viewshoppingbag();
+				clickonChromeFirefoxCheckout();
+
+			}
+			
+			
+			//shoppingcartPage.clickBackToTopButton();
+			
+			shoppingcartPage.VerifyGiftCardShippingChargeFreeinShoppingCartOrderTotalWidget();
+			
+			//shoppingcartPage.clickBackToTopButton();
+			
+			shoppingcartPage.clickCheckoutasGuestToggle();
+			
+			
+			username=retrieve("GuestEmail");
+			dynamicUsername=username.split("@")[0]+"_"+getCurrentDateAndTimeStamp()+"@"+username.split("@")[1];
+			System.out.println("The random email: "+dynamicUsername);
+			
+			//shoppingcartPage.clickBackToTopButton();
+			
+			shoppingcartPage.fillEmailCheckoutasGuest(dynamicUsername);
+			
+			//shoppingcartPage.clickBackToTopButton();
+			
+			shoppingcartPage.clickCheckoutasGuestButton();
+			
+			checkoutPage.fillShippingTabDetails(retrieve("ShippingFirstName"), retrieve("ShippingLastName"), retrieve("ShippingAddress"), retrieve("ShippingCity"), retrieve("ShippingState"), retrieve("ShippingZipcode"), retrieve("ShippingTelephone"));
+
+			/*checkoutPage.fillShippingTabDetails1(retrieve("ShippingFirstName"), retrieve("ShippingLastName"), retrieve("ShippingAddress"), retrieve("ShippingCity"));
+			
+			checkoutPage.selectShippingState(retrieve("ShippingState"));
+			
+			checkoutPage.fillShippingTabDetails2(retrieve("ShippingZipcode"), retrieve("ShippingTelephone"));*/
+			
+			checkoutPage.clickShippingContinue();
+			
+			checkoutPage.fillPaymentCreditCardNo(retrieve("CreditCardNo"));
+			
+			checkoutPage.fillPaymentCreditCardCvv(retrieve("CreditCardCvv"));
+			
+			checkoutPage.fillPaymentSavedCardCreditCardCvv(retrieve("CreditCardCvv"));
+			
+			checkoutPage.selectPaymentCreditCardExpityMonth(retrieve("CreditCardExpiryMonth"));
+			
+			checkoutPage.selectPaymentCreditCardExpityYear(retrieve("CreditCardExpiryYear"));
+			
+			//checkoutPage.clickBillingSameasShippingCheckbox();
+			
+			checkoutPage.fillPaymentBillingDetails(retrieve("BillingFirstName"), retrieve("BillingLastName"), retrieve("BillingAddress"), retrieve("BillingCity"), retrieve("BillingState"), retrieve("BillingZipCode"), retrieve("BillingTelephone"));
+			
+			/*checkoutPage.fillPaymentBillingDetails1(retrieve("BillingFirstName"), retrieve("BillingLastName"), retrieve("BillingAddress"), retrieve("BillingCity"));
+
+			checkoutPage.selectPaymentBillingState(retrieve("BillingState"));
+			
+			checkoutPage.fillPaymentBillingDetails2(retrieve("BillingZipCode"), retrieve("BillingTelephone"));*/
+			
+			checkoutPage.clickPaymentContinue();
+			
+			/*checkoutPage.EnterCvvinReviewTab(retrieve("CreditCardCvv"));
+			
+			checkoutPage.EnterSavedCvvinReviewTab(retrieve("CreditCardCvv"));
+			
+			checkoutPage.EnterSavedCvvinReviewTabSafari();*/
+			
+			if(checkoutPage.clickPlaceOrderButton())
+			{
+				
+				orderConfirmationPage.clickOnCloseButtonInSurveyFormPopup();
+				
+				orderConfirmationPage.getOrderNumber();
+				
+				checkoutPage.clickOrderConfirmationPageApplicationLogo();
+				
+				
+				/*if (browser.equalsIgnoreCase("InternetExplorer")) {
+
+					shoppingcartPage.checkingtheshoppingbagcountemptyandifnotemptyingtheshoppinginIE();
+
+				}
+				else {
+
+					shoppingcartPage.checkingtheshoppingbagcountemptyandifnotemptyingtheshopping();
+
+				}
+				
+				 clickOnMensWearhouseLogo();*/
+			}
+			else{
+				 clickOnMensWearhouseLogo();
+				 waitTime(3);
+				
+				
+				if (browser.equalsIgnoreCase("InternetExplorer")) {
+
+					shoppingcartPage.checkingtheshoppingbagcountemptyandifnotemptyingtheshoppinginIE();
+
+				}
+				
+				
+				else if (browser.equalsIgnoreCase("Safari")) {
+					shoppingcartPage.checkingtheSafarishoppingbagcountemptyandifnotemptyingtheshopping();
+				}
+				
+				
+				
+				else {
+
+					shoppingcartPage.checkingtheshoppingbagcountemptyandifnotemptyingtheshopping();
+
+				}
+				
+				 clickOnMensWearhouseLogo();
+			}
+			
+		
+		}
+		catch(Exception e){
+			testStepFailed("Exception Occured:" +e);
+		}
+		finally{
+			if(checkoutPage.testCaseExecutionStatus ||
+					classicGiftcardPage.testCaseExecutionStatus ||
+					giftcardPage.testCaseExecutionStatus ||
+					orderConfirmationPage.testCaseExecutionStatus ||
+					productDescriptionPage.testCaseExecutionStatus ||
+					shoppingcartPage.testCaseExecutionStatus){
+				this.testCaseExecutionStatus=true;
+			}
+			driver.quit();
+			destroyObjects();
+		}
+		testStepInfo("");
+		testStepInfo("*******************************");
+		testStepInfo("Test Execution Completed");
+		testStepInfo("*******************************");
+	}
+}

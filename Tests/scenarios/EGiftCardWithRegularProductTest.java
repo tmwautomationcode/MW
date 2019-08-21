@@ -1,0 +1,232 @@
+package scenarios;
+
+
+import baseClass.BaseClass;
+import baseClass.PopupWindows;
+import mwPages.EGiftCardPage;
+import mwPages.GiftCardsPage;
+import mwPages.HomePage;
+import mwPages.ProductDescriptionPage;
+import mwPages.ProductGridPage;
+import mwPages.ShoppingCartPage;
+import mwPages.DepartmentNavigation;
+
+public class EGiftCardWithRegularProductTest extends PopupWindows {
+
+	private BaseClass obj;
+
+	private ProductDescriptionPage productDescriptionPage;
+	private ProductGridPage productGridPage;
+	private EGiftCardPage eGiftcardPage;
+	private GiftCardsPage giftcardPage;
+	private ShoppingCartPage shoppingcartPage;
+	private HomePage homePage;
+	private DepartmentNavigation departmentNavigation;
+
+	public EGiftCardWithRegularProductTest(BaseClass obj) {
+		super(obj);
+		this.obj=obj;
+	}
+
+	public void createObjects(String browser){
+		obj.driver=driver;
+		obj.currentBrowser=browser;
+
+		eGiftcardPage = new	EGiftCardPage(obj);
+		giftcardPage = new	GiftCardsPage(obj);
+		productDescriptionPage = new	ProductDescriptionPage(obj);
+		productGridPage = new	ProductGridPage(obj);
+		shoppingcartPage = new ShoppingCartPage(obj);
+		homePage= new HomePage(obj);
+		departmentNavigation = new	DepartmentNavigation(obj);
+	}
+
+
+	public void destroyObjects(){
+
+
+		eGiftcardPage = null;
+		giftcardPage = null;
+		productDescriptionPage = null;
+		productGridPage = null;
+		shoppingcartPage = null;
+		homePage= null;
+		departmentNavigation = null;
+	}
+
+
+	public void eGiftCardWithRegularProductTestScenario(String machineName,String host,String port,String browser,String os,String browserVersion,String osVersion, String tcId){
+		try
+		{
+					
+			openBrowser(machineName, host, port, browser, os, browserVersion, osVersion);
+			createObjects(browser);
+			
+			/*if (browser.equalsIgnoreCase("Chrome")||browser.equalsIgnoreCase("Firefox")) {
+				
+				getJSESSIONIDOnceBrowserInitiated();
+				
+				getCLONEIDOnceBrowserInitiated();
+				
+			}*/
+
+			
+
+
+			if (browser.equalsIgnoreCase("Safari")) 
+			{
+				verifySafariUSFlagSelected();
+				waitTime(5);
+			} 
+
+			else 
+			{
+				verifyUSFlagSelected();
+			}
+
+			//clickOnBackToTopLinkInFooter();
+			
+			homePage.ClickonHomePageLogo();
+			
+			waitTime(4);
+
+			if (browser.equalsIgnoreCase("Firefox")) 
+			{
+				homePage.verifyBrowserOutdatedMessageisDisplayedAndClosed();
+			}
+
+			
+			
+			
+			
+			
+			
+			
+
+			if (browser.equalsIgnoreCase("InternetExplorer")) 
+			{
+
+				shoppingcartPage.checkingtheshoppingbagcountemptyandifnotemptyingtheshoppinginIE();
+
+			}
+			
+			
+			else if (browser.equalsIgnoreCase("Safari")) 
+			{
+				shoppingcartPage.checkingtheSafarishoppingbagcountemptyandifnotemptyingtheshopping();
+			}
+			
+			else 
+			{
+
+				shoppingcartPage.checkingtheshoppingbagcountemptyandifnotemptyingtheshopping();
+
+			}
+
+
+			//shoppingcartPage.checkingtheshoppingbagcountemptyandifnotemptyingtheshopping();
+
+			//homePage.ClickonHomePageLogo();
+
+			if(getConfigProperty("UseSKU_ID").equalsIgnoreCase("no"))
+			{
+				
+				//departmentNavigation.clickOnDepartmentSubCategoryOrPromoLink(retrieve("DepartmentName"),retrieve("SubCategoryName"));
+				
+				departmentNavigation.selectCategoryFromDepartmentMenu(retrieve("DepartmentName"),retrieve("SubCategoryName"));
+				
+				productGridPage.VerifyProductslistedinPGPIfNotRefreshthePage();
+				
+				productGridPage.selectProductInProductGridPage(retrieve("ProductName"));
+				
+			}
+			else
+			{
+				searchProductnew(retrieve("SkuID"));
+				
+				waitTime(3);
+			}
+
+			productDescriptionPage.verifyProductDisplayedinPDPPageIfNotRefreshThePage();
+			
+			productDescriptionPage.selectSizeFromProductDescriptionPagenew(retrieve("ProductSize"));
+
+			productDescriptionPage.clickPDPAddtoShoppingBagButton();
+
+			//productDescriptionPage.clickHomePageLogoinPDPPage();
+
+			/*if (browser.equalsIgnoreCase("InternetExplorer")) {
+
+				homePage.RegisteredUserProceedtoCheckoutinIE();
+
+			}
+			else {
+
+				viewshoppingbag();
+
+			}
+
+			homePage.ClickonHomePageLogo();*/
+
+			homePage.ClickonGiftCardsFooterLink();
+
+			giftcardPage.clickEGiftCardCustomizeButton();
+
+			giftcardPage.fillEGiftCardDetails(retrieve("ReceipientName"), retrieve("SenderName"), retrieve("ReceipientEmail"), retrieve("ReceipientConfirmEmail"), retrieve("GiftAmount"), retrieve("GiftMessage"));
+
+			if (browser.equalsIgnoreCase("Firefox")) {
+
+				homePage.mouseoverApplicationLogo();
+
+			}
+
+			giftcardPage.clickEGiftCardAddToShoppingBagButton();
+
+			giftcardPage.verifyerrormessageisdisplayed();
+
+			productDescriptionPage.clickHomePageLogoinPDPPage();
+
+			if (browser.equalsIgnoreCase("InternetExplorer")) 
+			{
+
+				shoppingcartPage.checkingtheshoppingbagcountemptyandifnotemptyingtheshoppinginIE();
+
+			}
+			
+			
+			else if (browser.equalsIgnoreCase("Safari")) 
+			{
+				shoppingcartPage.checkingtheSafarishoppingbagcountemptyandifnotemptyingtheshopping();
+			}
+			
+			
+			else {
+
+				shoppingcartPage.checkingtheshoppingbagcountemptyandifnotemptyingtheshopping();
+
+			}
+
+			homePage.ClickonHomePageLogo();
+
+
+
+		}catch(Exception e){
+			testStepFailed(e.toString());
+		}
+		finally{
+			if(	eGiftcardPage.testCaseExecutionStatus ||
+					giftcardPage.testCaseExecutionStatus ||
+					productDescriptionPage.testCaseExecutionStatus ||
+					shoppingcartPage.testCaseExecutionStatus ||
+					productGridPage .testCaseExecutionStatus){
+				this.testCaseExecutionStatus=true;
+			}
+			driver.quit();
+			destroyObjects();
+		}
+		testStepInfo("");
+		testStepInfo("*******************************");
+		testStepInfo("Test Execution Completed");
+		testStepInfo("*******************************");
+	}
+}

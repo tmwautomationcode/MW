@@ -1,0 +1,212 @@
+package scenarios;
+
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.List;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+
+import baseClass.BaseClass;
+import baseClass.PopupWindows;
+import mwPages.ProductDescriptionPage;
+import mwPages.ProductGridPage;
+import mwPages.HomePage;
+
+
+public class ImageSizeValidationTest extends PopupWindows{
+
+	private BaseClass obj;
+
+	private ProductGridPage productGridPage;
+	private ProductDescriptionPage productDescriptionPage;
+	private HomePage homePage;
+	
+
+
+
+	public ImageSizeValidationTest(BaseClass obj) {
+		super(obj);
+		this.obj=obj;
+	}
+
+
+	public void createObjects(String browser){
+		obj.driver=driver;
+		obj.currentBrowser=browser;
+		productGridPage = new	ProductGridPage(obj);
+		productDescriptionPage = new ProductDescriptionPage(obj);
+		homePage= new HomePage(obj);
+
+	}
+
+
+	public void destroyObjects(){
+		productGridPage = null;
+		productDescriptionPage = null;
+		homePage= null;
+	}
+
+
+
+	public void imageSizeValidationTestScenario(String machineName,String host,String port,String browser,String os,String browserVersion,String osVersion){
+		try
+		{
+
+			testStepInfo("");
+			testStepInfo("Opening Browser and Navigating to the URL");
+			testStepInfo("*****************************************************");
+			openBrowser(machineName, host, port, browser, os, browserVersion, osVersion);
+			createObjects(browser);
+
+
+			if (browser.equalsIgnoreCase("Chrome")||browser.equalsIgnoreCase("Firefox")||browser.equalsIgnoreCase("Safari")) 
+			{
+
+				getJSESSIONIDOnceBrowserInitiated();
+
+				getCLONEIDOnceBrowserInitiated();
+
+			}
+
+
+			
+
+			if (browser.equalsIgnoreCase("Safari")) 
+			{
+				verifySafariUSFlagSelected();
+				waitTime(5);
+			} 
+
+			else 
+			{
+				verifyUSFlagSelected();
+			}
+
+			clickOnBackToTopLinkInFooter();
+
+			
+
+			if (browser.equalsIgnoreCase("Firefox")) 
+			{
+				homePage.verifyBrowserOutdatedMessageisDisplayedAndClosed();
+			}
+
+
+
+			List<WebElement> listofimages = driver.findElements(By.tagName("img"));
+
+			int TotalImages = listofimages.size();
+			
+			testStepInfo("");
+
+			testStepInfo("Total Images : "+TotalImages);
+
+			
+			int i = 1;
+			
+			double TotalImageSize = 0.00;
+
+			for (WebElement img : listofimages) 
+			{
+				
+				String Src = img.getAttribute("src");
+
+				if (Src==null) 
+				{
+
+					testStepInfo("");
+
+					testStepInfo("Image No : "+i);
+
+					testStepWarning("Image Src : Empty");
+
+				}
+
+				else 
+				{
+
+					testStepInfo("");
+
+					testStepInfo("Image No : "+i);
+
+					testStepPassed("Image Src : "+Src);
+
+					URLConnection urlConnection = new URL(img.getAttribute("src")).openConnection();
+
+					int size = urlConnection.getContentLength();
+
+					double bytes = size;
+
+					double kilobytes = (bytes / 1024);
+
+					double ImageSize = kilobytes;
+
+					testStepPassed("Image Size in KB : "+kilobytes);
+					
+					TotalImageSize = TotalImageSize+ImageSize;
+
+					if (ImageSize<100.00) 
+					{
+
+						testStepPassed("The Image Size is less than 100 KB");
+
+					}
+
+					else 
+					{
+
+						testStepWarning("Warning : The Image Size is greater than 100 KB");
+
+					}
+
+				}
+				
+				i++;
+				
+			}
+			
+			testStepInfo("");
+			
+			testStepInfo("");
+			
+			testStepInfo("Total Images Size Count : "+TotalImageSize+" KB");
+			
+			if (TotalImageSize<1000.00) 
+			{
+				
+				testStepPassed("The Total Images Size Count is less than 1000 KB");
+				
+			}
+			
+			else 
+			{
+			
+				testStepWarning("Warning : The Total Images Size Count is greater than 1000 KB");
+				
+			}
+
+		}
+
+		catch(Exception e)
+		{
+			testStepFailed(e.toString());
+
+		}
+
+		finally
+		{
+			if(productGridPage.testCaseExecutionStatus || productDescriptionPage.testCaseExecutionStatus)
+			{
+				this.testCaseExecutionStatus=true;
+			}
+			driver.quit();
+			destroyObjects();
+		}
+
+		testStepInfo("");
+		testStepInfo("*******************************");
+		testStepInfo("Test Execution Completed");
+		testStepInfo("*******************************");
+	}
+}

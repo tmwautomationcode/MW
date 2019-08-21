@@ -1,0 +1,199 @@
+package scenarios;
+
+import java.util.ArrayList;
+import java.util.List;
+import baseClass.BaseClass;
+import baseClass.PopupWindows;
+import mwPages.DepartmentNavigation;
+import mwPages.ProductBundlePage;
+import mwPages.ProductDescriptionPage;
+import mwPages.ProductGridPage;
+import mwPages.HomePage;
+
+import mwPages.ShoppingCartPage;
+
+public class AddToCartBundleTest extends PopupWindows {
+
+	private BaseClass obj;
+
+	private DepartmentNavigation departmentnavigation;
+	private ProductBundlePage productbundlePage;
+	private ProductDescriptionPage productDescriptionPage;
+	private ProductGridPage productGridPage;
+	private ShoppingCartPage shoppingcartPage;
+	private HomePage homePage;
+	
+
+	private ArrayList<String> productAddedToCart = new ArrayList<String>();
+	private List<String> productList;
+
+	public AddToCartBundleTest(BaseClass obj) {
+		super(obj);
+		this.obj=obj;
+	}
+
+	public void createObjects(String browser){
+		obj.driver=driver;
+		obj.currentBrowser=browser;
+
+		departmentnavigation = new	DepartmentNavigation(obj);
+		productbundlePage = new	ProductBundlePage(obj);
+		productDescriptionPage = new ProductDescriptionPage(obj);
+		productGridPage = new	ProductGridPage(obj);
+		shoppingcartPage = new	ShoppingCartPage(obj);
+		homePage= new HomePage(obj);
+		
+	}
+
+	public void destroyObjects(){
+		departmentnavigation = null;
+		productbundlePage = null;
+		productDescriptionPage = null;
+		productGridPage = null;
+		shoppingcartPage = null;
+		homePage= null;
+		
+	}
+
+	public void AddToCartBundleTestScenario(String machineName,String host,String port,String browser,String os,String browserVersion,String osVersion, String tcId){
+		try{
+			//1.Add all the products in a Bundle to Cart
+			openBrowser(machineName, host, port, browser, os, browserVersion, osVersion);
+			createObjects(browser);
+
+			/*if (browser.equalsIgnoreCase("Chrome")||browser.equalsIgnoreCase("Firefox")) 
+			{
+
+				getJSESSIONIDOnceBrowserInitiated();
+
+				getCLONEIDOnceBrowserInitiated();
+
+			}*/
+
+
+			if (browser.equalsIgnoreCase("Safari")) 
+			{
+				verifySafariUSFlagSelected();
+				waitTime(5);
+			} 
+
+			else 
+			{
+				verifyUSFlagSelected();
+			}
+
+			homePage.ClickonHomePageLogo();
+			
+			//clickOnBackToTopLinkInFooter();
+
+
+
+			if (browser.equalsIgnoreCase("Firefox")) 
+			{
+				homePage.verifyBrowserOutdatedMessageisDisplayedAndClosed();
+			}
+
+
+
+			if (browser.equalsIgnoreCase("InternetExplorer")) {
+
+				shoppingcartPage.checkingtheshoppingbagcountemptyandifnotemptyingtheshoppinginIE();
+
+			}
+
+			else if (browser.equalsIgnoreCase("Safari")) {
+				shoppingcartPage.checkingtheSafarishoppingbagcountemptyandifnotemptyingtheshopping();
+			}
+
+			else {
+
+				shoppingcartPage.checkingtheshoppingbagcountemptyandifnotemptyingtheshopping();
+
+			}
+
+
+			//homePage.ClickonHomePageLogo();
+
+			departmentnavigation.clickOnDepartmentSubCategoryOrPromoLink(retrieve("DepartmentName"),retrieve("SubCategoryName"));
+			
+		
+			productGridPage.VerifyProductslistedinPGPIfNotRefreshthePage();
+
+			productGridPage.selectProductInProductGridPage(retrieve("ProductName"));
+
+			productbundlePage.verifyBundleProductPageDisplayedIfNotRefreshThePage();
+			productbundlePage.verifySuitSeparateBundleProductPageDisplayedIfNotRefreshThePage();
+
+			productList=productbundlePage.getListOfProductListedInBundleProductPage();
+			
+			for(int i=1;i<=productList.size();i++)
+			{
+
+				productbundlePage.selectSizeFromBundleProductPage_New(i, retrieve("ProductSize"));
+
+				productbundlePage.clickOnAddToCartFromBundleProductPage_New(i);
+
+			}
+
+			
+			
+/*
+			for(int i=1;i<productList.size();i++)
+			{
+
+				productbundlePage.selectSizeFromBundleProductPage(productList.get(i),"");
+
+				productbundlePage.clickOnAddToCartFromBundleProductPage(productList.get(i));
+
+				productAddedToCart.add(productList.get(i));
+
+			}
+*/
+			if (browser.equalsIgnoreCase("InternetExplorer")) 
+			{
+
+				homePage.RegisteredUserProceedtoCheckoutinIE();
+
+			}
+			else 
+			{
+
+				//viewshoppingbag();
+				clickonChromeFirefoxCheckout();
+
+			}
+			
+			
+
+			for(int i=1;i<=productAddedToCart.size();i++){
+
+				shoppingcartPage.verifyProductInShoppingCartPage(productAddedToCart.get(i));
+
+			}
+			
+			shoppingcartPage.removeAllItemsfromShoppingCart();
+
+			//shoppingcartPage.removeAllItemInMyCartPage();
+
+			homePage.ClickonHomePageLogo();
+		}
+		catch(Exception e){
+			testStepFailed("Exception Occured: "+e );
+		}
+		finally{
+			if(	departmentnavigation.testCaseExecutionStatus ||
+					productbundlePage.testCaseExecutionStatus ||
+					productDescriptionPage.testCaseExecutionStatus ||
+					productGridPage.testCaseExecutionStatus ||
+					shoppingcartPage.testCaseExecutionStatus){
+				this.testCaseExecutionStatus=true;
+			}
+			driver.quit();
+			destroyObjects();
+		}
+		testStepInfo("");
+		testStepInfo("*******************************");
+		testStepInfo("Test Execution Completed");
+		testStepInfo("*******************************");
+	}
+}

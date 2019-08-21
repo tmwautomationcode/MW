@@ -1,0 +1,209 @@
+package scenarios;
+
+import baseClass.BaseClass;
+import baseClass.PopupWindows;
+import mwPages.DepartmentNavigation;
+import mwPages.MyAccountMySizePage;
+import mwPages.MyAccountPage;
+import mwPages.ProductDescriptionPage;
+import mwPages.ProductGridPage;
+import mwPages.ShoppingCartPage;
+import mwPages.HomePage;
+
+public class SavedSizesSuitsTest extends PopupWindows {
+
+	private BaseClass obj;
+
+	private MyAccountMySizePage myAccountMySizePage;
+	private MyAccountPage myAccountPage;
+	private DepartmentNavigation departmentNavigation;
+	private ShoppingCartPage shoppingcartPage;
+	private ProductDescriptionPage productDescriptionPage;
+	private ProductGridPage productGridPage;
+	private HomePage homePage;
+	String size=null;
+
+
+	public SavedSizesSuitsTest(BaseClass obj) {
+		super(obj);
+		this.obj=obj;
+	}
+
+	public void createObjects(String browser){
+		obj.driver=driver;
+		obj.currentBrowser=browser;
+
+		departmentNavigation = new	DepartmentNavigation(obj);
+		myAccountMySizePage = new	MyAccountMySizePage(obj);
+		myAccountPage = new	MyAccountPage(obj);
+		productDescriptionPage = new	ProductDescriptionPage(obj);
+		productGridPage = new	ProductGridPage(obj);
+		shoppingcartPage = new	ShoppingCartPage(obj);
+		homePage= new HomePage(obj);
+	}
+
+
+	public void destroyObjects(){
+
+
+		departmentNavigation = null;
+		myAccountMySizePage = null;
+		myAccountPage = null;
+		productDescriptionPage = null;
+		productGridPage = null;
+		shoppingcartPage = null;
+		homePage= null;
+	}
+
+	public void SavedSizesSuitsTestScenario(String machineName,String host,String port,String browser,String os,String browserVersion,String osVersion, String tcId){
+		try{
+
+			//1.Open Site			
+			openBrowser(machineName, host, port, browser, os, browserVersion, osVersion);
+			createObjects(browser);
+			
+			
+		/*	if (browser.equalsIgnoreCase("Chrome")||browser.equalsIgnoreCase("Firefox")) {
+				
+				getJSESSIONIDOnceBrowserInitiated();
+				
+				getCLONEIDOnceBrowserInitiated();
+				
+			}*/
+
+			
+			
+
+
+			if (browser.equalsIgnoreCase("Safari")) 
+			{				
+				verifySafariUSFlagSelected();
+				waitTime(5);
+			} 
+
+			else 
+			{
+				verifyUSFlagSelected();
+			}
+
+			//clickOnBackToTopLinkInFooter();
+			
+			homePage.ClickonHomePageLogo();
+			
+			
+
+			if (browser.equalsIgnoreCase("Firefox")) 
+			{
+				homePage.verifyBrowserOutdatedMessageisDisplayedAndClosed();
+			}
+
+
+			waitTime(2);
+			
+			//departmentNavigation.clickOnDepartmentSubCategoryOrPromoLink(retrieve("DepartmentName"),retrieve("SubCategoryName"));
+			
+			departmentNavigation.selectCategoryFromDepartmentMenu(retrieve("DepartmentName"),retrieve("SubCategoryName"));
+			
+			//productGridPage.VerifyProductslistedinPGPIfNotRefreshthePage();
+						
+			size=productGridPage.selectSizeFromFilterOptionInProductGridPage(retrieve("SizeFilter"));
+
+			clickOnBackToTopLinkInFooter();
+			
+			mouseHoveronSignInLink();
+
+			
+			productGridPage.savedSizesInProductGridPage();
+
+			
+			SignInWithoutSignInLinkClicked(retrieve("Username"), retrieve("Password"));
+
+			waitTime(3);
+			
+			homePage.ClickonHomePageLogo();
+			
+			if (browser.equalsIgnoreCase("InternetExplorer")) 
+			{
+
+				homePage.ClickonIEAccountHeaderlinkgreetinglink();
+
+			} 
+			
+			
+			else if (browser.equalsIgnoreCase("Safari")) 
+			{
+				homePage.ClickonSafariHeaderlinkgreetinglink();
+				waitTime(2);
+			}
+			
+			
+			
+			else 
+			{
+
+				homePage.ClickonHeaderlinkgreetinglink();
+
+			}
+			
+			myAccountPage.clickOnMySizes();
+			
+			
+			shoppingcartPage.removeAllSizesInMySizesPage();
+
+			
+			//departmentNavigation.clickOnDepartmentSubCategoryOrPromoLink(retrieve("DepartmentName"),retrieve("SubCategoryName"));
+			
+			departmentNavigation.selectCategoryFromDepartmentMenu(retrieve("DepartmentName"),retrieve("SubCategoryName"));
+
+			
+			if(productGridPage.verifyFilterSaveSizeFromProductGridPage())
+			{
+				
+				testStepFailed("The saved size is not deleted from the PGP");
+			}
+			else
+			{
+				testStepPassed("Verified saved size deleted from the PGP");
+			}
+			
+			
+			homePage.ClickonHomePageLogo();
+			
+			if (browser.equalsIgnoreCase("Chrome") || browser.equalsIgnoreCase("Firefox")) 
+			{
+				homePage.ClickonSignoutinHeaderlinkgreetinglink();
+			} 
+			
+			
+			else if (browser.equalsIgnoreCase("Safari")) 
+			{
+				homePage.ClickonSafariSignOutlink();
+			}
+			
+			else 
+			{
+				homePage.ClickonIESignoutinHeaderlinkgreetinglink();
+			}
+
+			homePage.verifyUserLoggedOutSuccessfully();
+		}
+		catch(Exception e){
+			testStepFailed("Exception Occured:" +e);
+		}finally{
+			if(departmentNavigation.testCaseExecutionStatus ||
+					myAccountMySizePage.testCaseExecutionStatus ||
+					myAccountPage.testCaseExecutionStatus ||
+					productDescriptionPage.testCaseExecutionStatus ||
+					productGridPage.testCaseExecutionStatus ||
+					shoppingcartPage.testCaseExecutionStatus){
+				this.testCaseExecutionStatus=true;
+			}
+			driver.quit();
+			destroyObjects();
+		}
+		testStepInfo("");
+		testStepInfo("*******************************");
+		testStepInfo("Test Execution Completed");
+		testStepInfo("*******************************");
+	}
+}

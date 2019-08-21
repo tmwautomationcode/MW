@@ -1,0 +1,84 @@
+package mwPages;
+
+import org.openqa.selenium.By;
+
+
+import baseClass.BaseClass;
+import baseClass.PopupWindows;
+
+public class PayPalPage  extends PopupWindows{
+
+	public PayPalPage(BaseClass obj){
+		
+		super(obj);
+	}
+
+	String payPalPageTitle = "paypal";
+	public static final String txt_PayPalEmail="Paypal Email#xpath=//input[contains(@name,'login_email')]";
+	public static final String txt_PayPalPassword="Paypal Password#xpath=//input[contains(@name,'login_password')]";
+	public static final String btn_PayPayLogin="Paypal login button#xpath=//*[contains(@id,'submitLogin') or contains(@id,'btnLogin')]";
+	public static final String btn_PayPalShippingContinue="paypal shipping Continue button#xpath=//*[@id='confirmButtonTop']";
+	public static final String btn_PayPalPlaceOrder="paypal place oreder button#xpath=//*[@id='placeOrderBtn' or text()='Place Order']";
+	public static final String lnk_CancelAndReturn="cancel and return menswearlogo #xpath=//input[contains(@id,'cancel_return')]";
+
+	public boolean verifyPayPalPage(){
+		boolean flag = false;
+		waitTime(10);
+		try{
+			if(driver.getTitle().toLowerCase().contains("PayPal Checkout - Log in")){ 
+				testStepPassed("PayPal Page is displayed");
+				flag = true;
+			}
+		}catch(Exception e){
+			testStepFailed("PayPal Page is not displayed!!!");
+		}
+		return flag;	
+	}
+
+	public void fillSignInPayPalCheckOutPage(String paypalUserName,String paypalPassword){
+		try{
+			driver.switchTo().frame("injectedUl");
+			if((!paypalUserName.isEmpty())&&(!paypalPassword.isEmpty())){
+				typeIn(txt_PayPalEmail,paypalUserName);
+				typeIn(txt_PayPalPassword,paypalPassword);
+				/*WebElement paypalUsertName=driver.findElement(By.name("login_email"));
+				paypalUsertName.sendKeys(paypalUserName);
+				WebElement paypalUsertPassword=driver.findElement(By.name("login_password"));
+				paypalUsertPassword.sendKeys(paypalPassword);
+				*/
+				clickOn(btn_PayPayLogin);
+				driver.switchTo().defaultContent();
+			}
+		}catch(Exception e){
+			testStepFailed(e.toString());
+		}
+	}
+
+	public void payPalShippingContinue(){
+		try{
+			waitTime(6);
+		clickOn(btn_PayPalShippingContinue);
+		//driver.switchTo().defaultContent();
+		
+	}catch(Exception e){
+		testStepFailed(e.toString());
+	}
+	}
+
+	public void clickOnCancelAndToReturnMenswearHouseLogo(){
+		clickOn(lnk_CancelAndReturn);
+	}
+
+	public void payPalPlaceOrder(){
+		try {
+			waitTime(5);
+			if (driver.findElement(By.xpath("//*[@id='placeOrderBtn' or text()='Place Order']")).isDisplayed()) {
+				clickOn(btn_PayPalPlaceOrder);
+			}
+		} catch (Exception e) {
+			testStepFailed("PlaceOrder button is not found");
+		}
+		
+	}
+
+}

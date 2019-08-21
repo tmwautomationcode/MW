@@ -1,0 +1,357 @@
+package scenarios;
+
+import baseClass.BaseClass;
+import baseClass.PopupWindows;
+import mwPages.DepartmentNavigation;
+import mwPages.EGiftCardPage;
+import mwPages.GiftCardsPage;
+import mwPages.ProductDescriptionPage;
+import mwPages.ProductGridPage;
+import mwPages.ShoppingCartPage;
+import mwPages.HomePage;
+
+public class GuidedShoppingTest extends PopupWindows {
+
+	private BaseClass obj;
+
+	private PopupWindows popupWindows;
+	private DepartmentNavigation departmentNavigation;
+	private ProductDescriptionPage productDescriptionPage;
+	private ProductGridPage productGridPage;
+	private ShoppingCartPage shoppingcartPage;
+	private GiftCardsPage giftcardPage;
+	private EGiftCardPage eGiftcardPage;
+	private HomePage homePage;
+	
+	public GuidedShoppingTest(BaseClass obj) {
+		super(obj);
+		this.obj=obj;
+	}
+
+	public void createObjects(String browser){
+		obj.driver=driver;
+		obj.currentBrowser=browser;
+
+		departmentNavigation = new	DepartmentNavigation(obj);
+		eGiftcardPage = new	EGiftCardPage(obj);
+		giftcardPage = new	GiftCardsPage(obj);
+		productDescriptionPage = new	ProductDescriptionPage(obj);
+		productGridPage = new	ProductGridPage(obj);
+		shoppingcartPage = new	ShoppingCartPage(obj);
+		popupWindows=new PopupWindows(obj);
+		homePage= new HomePage(obj);
+		
+	}
+
+
+
+	public void destroyObjects(){
+
+
+		departmentNavigation = null;
+		eGiftcardPage = null;
+		giftcardPage = null;
+		productDescriptionPage = null;
+		productGridPage = null;
+		shoppingcartPage = null;
+		popupWindows=null;
+		homePage = null;
+
+	}
+
+
+
+	String JSESSIONIDFromApplication;
+	String JSESSIONIDAfterNewValue;
+	String JSESSIONIDAfterAddingProduct;
+	String CLONEIDFromApplication;
+	String CLONEIDAfterAddingProduct;
+	String CLONEIDAfterNewValue;
+	
+	public void guidedShoppingTestScenario(String machineName,String host,String port,String browser,String os,String browserVersion,String osVersion, String tcId){
+
+		try
+		{	
+
+			/*DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy-HH-mm-ss-a");
+    	  	Date date = new Date();
+    	  	String date1= dateFormat.format(date);
+    	  	
+            WritableWorkbook workbook = Workbook.createWorkbook(new File("./TestResults/GuidedShopping-"+date1+".xls"));*/
+
+
+			//openBrowser(machineName, host, port, browser, os, browserVersion, osVersion);
+			createObjects(browser);
+
+
+			if (browser.equalsIgnoreCase("Chrome")||browser.equalsIgnoreCase("Firefox")) 
+			 {
+
+				getJSESSIONIDOnceBrowserInitiated();
+
+				getCLONEIDOnceBrowserInitiated();
+
+			}
+			 
+
+			
+	/*		if (browser.equalsIgnoreCase("Safari")) 
+			{
+				verifySafariUSFlagSelected();
+				waitTime(5);
+			} 
+
+			else 
+			{
+				verifyUSFlagSelected();
+			}
+
+			//clickOnBackToTopLinkInFooter();
+			
+			homePage.ClickonHomePageLogo();
+
+			
+
+			if (browser.equalsIgnoreCase("Firefox")) 
+			{
+				homePage.verifyBrowserOutdatedMessageisDisplayedAndClosed();
+			}*/
+			
+			
+			
+			String CertonaGuidedShoppingTitlefromApplication;
+			String SNo = retrieve("SerialNo");
+			String Category = retrieve("Category");
+			String Formal = retrieve("Formal");
+			String Fit = retrieve("Fit");
+			String Color = retrieve("Color");
+			String Price = retrieve("Price");
+			String URL = retrieve("URL");
+
+			String CertonaGuidedShoppingExpectedTitle = "popular suits personalized for you:";
+			String CertonaGuidedShoppingExpectedTitle2 = "popular sportcoats personalized for you:";
+			String CertonaGuidedShoppingExpectedTitle3 = "popular shirts personalized for you:";
+			String CertonaGuidedShoppingExpectedTitle4 = "popular pants personalized for you:";
+			String CertonaGuidedShoppingExpectedTitle5 = "popular items personalized for you:";
+			String CertonaGuidedShoppingErrorTitle = "Sorry, we could not find a match.";
+
+			//testStepPassed("Total Combinations : 302");
+
+			if (Category.equalsIgnoreCase("Whole Look")) 
+			{
+				testStepInfo("");
+				testStepInfo("Combination Details");
+				testStepInfo("***********************");
+				testStepPassed("Combination No : "+SNo);
+				testStepPassed("Category : "+Category);
+				testStepPassed("Formal : "+Formal);
+				testStepPassed("Color : "+Color);
+				testStepPassed("Fit : "+Fit);
+				testStepPassed("Price : "+Price);
+				testStepPassed("URL : "+URL);
+
+				NavigatetoURL(URL);
+
+				//clickPDPAddtoShoppingBagButton();
+				
+				CertonaGuidedShoppingTitlefromApplication =  getCertonaGuidedShoppingTitle();
+
+				testStepInfo("");
+				
+				testStepInfo("Result");
+
+				testStepInfo("********");
+
+				if (CertonaGuidedShoppingTitlefromApplication.contains(CertonaGuidedShoppingExpectedTitle)) 
+				{
+
+					testStepPassed("Select one of these popular suits personalized for you title is displayed");
+
+					getCertonaGuidedShoppingProductsCount();
+
+				}
+				else if (CertonaGuidedShoppingTitlefromApplication.contains(CertonaGuidedShoppingExpectedTitle2)) 
+				{
+
+					testStepPassed("Select one of these popular sportcoats personalized for you title is displayed");
+
+					getCertonaGuidedShoppingProductsCount();
+
+				}
+
+				else if (CertonaGuidedShoppingTitlefromApplication.contains(CertonaGuidedShoppingExpectedTitle3)) 
+				{
+
+					testStepPassed("Select one of these popular shirts personalized for you title is displayed");
+
+					getCertonaGuidedShoppingProductsCount();
+
+				}
+
+				else if (CertonaGuidedShoppingTitlefromApplication.contains(CertonaGuidedShoppingExpectedTitle4)) 
+				{
+
+					testStepPassed("Select one of these popular pants personalized for you title is displayed");
+
+					getCertonaGuidedShoppingProductsCount();
+
+				}
+
+				else if (CertonaGuidedShoppingTitlefromApplication.contains(CertonaGuidedShoppingExpectedTitle5)) 
+				{
+
+					testStepPassed("Select one of these popular items personalized for you:");
+
+					getCertonaGuidedShoppingProductsCount();
+
+				}
+
+				else if (CertonaGuidedShoppingTitlefromApplication.contains(CertonaGuidedShoppingErrorTitle)) 
+				{
+					
+					testStepWarning("Warning : Sorry, we could not find a match. However, check out these popular items that you may like message is displayed");
+
+					getCertonaGuidedShoppingProductsCount();
+					
+					String Result = "Sorry, We could not find a match";
+					
+					CreateNewRowandEnterValuesGuidedShopping(Category, Formal, Fit, Color, Price, URL, Result);
+
+				}
+				else 
+				{
+					testStepWarning("Warning : Blank Page is displayed");
+					
+					String Result = "Blank Page";
+					
+					CreateNewRowandEnterValuesGuidedShopping(Category, Formal, Fit, Color, Price, URL, Result);
+				}
+			}
+
+			else {
+				testStepInfo("");
+				testStepInfo("Combination Details");
+				testStepInfo("***********************");
+				testStepPassed("Combination No : "+SNo);
+				testStepPassed("Category : "+Category);
+				testStepPassed("Formal : "+Formal);
+				testStepPassed("Fit : "+Fit);
+				testStepPassed("Color : "+Color);
+				testStepPassed("URL : "+URL);
+
+				NavigatetoURL(URL);
+				
+			/*	homePage.testing();
+				
+				clickPDPAddtoShoppingBagButton();
+*/
+				CertonaGuidedShoppingTitlefromApplication =  getCertonaGuidedShoppingTitle();
+				
+				//System.out.println("CertonaGuidedShoppingTitlefromApplication : "+CertonaGuidedShoppingTitlefromApplication);
+				
+
+				testStepInfo("");
+				
+				testStepInfo("Result");
+
+				testStepInfo("********");
+
+				if (CertonaGuidedShoppingTitlefromApplication.contains(CertonaGuidedShoppingExpectedTitle)) 
+				{
+
+					testStepPassed("Select one of these popular suits personalized for you title is displayed");
+
+					getCertonaGuidedShoppingProductsCount();
+
+				}
+				else if (CertonaGuidedShoppingTitlefromApplication.contains(CertonaGuidedShoppingExpectedTitle2)) 
+				{
+
+					testStepPassed("Select one of these popular sportcoats personalized for you title is displayed");
+
+					getCertonaGuidedShoppingProductsCount();
+
+				}
+
+				else if (CertonaGuidedShoppingTitlefromApplication.contains(CertonaGuidedShoppingExpectedTitle3)) 
+				{
+
+					testStepPassed("Select one of these popular shirts personalized for you title is displayed");
+
+					getCertonaGuidedShoppingProductsCount();
+
+				}
+
+				else if (CertonaGuidedShoppingTitlefromApplication.contains(CertonaGuidedShoppingExpectedTitle4)) 
+				{
+
+					testStepPassed("Select one of these popular pants personalized for you title is displayed");
+
+					getCertonaGuidedShoppingProductsCount();
+
+				}
+
+				else if (CertonaGuidedShoppingTitlefromApplication.contains(CertonaGuidedShoppingExpectedTitle5)) 
+				{
+
+					testStepPassed("Select one of these popular items personalized for you:");
+
+					getCertonaGuidedShoppingProductsCount();
+
+				}
+
+				else if (CertonaGuidedShoppingTitlefromApplication.contains(CertonaGuidedShoppingErrorTitle)) 
+				{
+
+					testStepWarning("Warning : Sorry, we could not find a match. However, check out these popular items that you may like message is displayed");
+
+					getCertonaGuidedShoppingProductsCount();
+					
+					String Result = "Sorry, We could not find a match";
+					
+					CreateNewRowandEnterValuesGuidedShopping(Category, Formal, Fit, Color, Price, URL, Result);
+
+
+				}
+				else 
+				{
+					testStepWarning("Warning : Blank Page is displayed");
+					
+					String Result = "Blank Page";
+					
+					CreateNewRowandEnterValuesGuidedShopping(Category, Formal, Fit, Color, Price, URL, Result);
+
+				}
+			}
+
+		}
+
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			testStepFailed(e.toString());
+		}
+		finally
+		{
+			if(homePage.testCaseExecutionStatus ||
+					departmentNavigation.testCaseExecutionStatus ||
+					eGiftcardPage.testCaseExecutionStatus ||
+					giftcardPage.testCaseExecutionStatus ||
+					productDescriptionPage.testCaseExecutionStatus ||
+					productGridPage.testCaseExecutionStatus ||
+					shoppingcartPage.testCaseExecutionStatus ||
+					popupWindows.testCaseExecutionStatus){
+				this.testCaseExecutionStatus=true;
+			}
+			//destroyObjects();
+			//driver.quit();
+		}
+		testStepInfo("");
+		testStepInfo("*******************************");
+		testStepInfo("Test Execution Completed");
+		testStepInfo("*******************************");
+		testStepInfo("");
+	}
+
+
+}

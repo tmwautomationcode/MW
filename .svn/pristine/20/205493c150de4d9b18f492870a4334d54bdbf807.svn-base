@@ -1,0 +1,746 @@
+/*package scenarios;
+
+import baseClass.BaseClass;
+import baseClass.PopupWindows;
+import mwPages.DepartmentNavigation;
+import mwPages.ProductBundlePage;
+import mwPages.ProductDescriptionPage;
+import mwPages.ProductGridPage;
+import mwPages.SavedItemPage;
+import mwPages.ShoppingCartPage;
+
+public class ShoppingCartTest extends PopupWindows{
+
+	BaseClass obj;
+
+	ProductDescriptionPage productDescriptionPage;
+	ProductGridPage productGridPage;
+	ShoppingCartPage shoppingcartPage;
+	PopupWindows popupWindows;
+	DepartmentNavigation departmentNavigation;
+	SavedItemPage savedItemPage;
+	ProductBundlePage productbundlePage;
+
+	private String savedProduct,sizeTwo,savedProductSize;
+
+	public ShoppingCartTest(BaseClass obj) {
+		super(obj);
+		this.obj=obj;
+	}
+
+	public void createObjects(String browser){
+		obj.driver=driver;
+		obj.currentBrowser=browser;
+
+		departmentNavigation = new	DepartmentNavigation(obj);
+		productbundlePage = new	ProductBundlePage(obj);
+		productDescriptionPage = new	ProductDescriptionPage(obj);
+		productGridPage = new	ProductGridPage(obj);
+		savedItemPage = new	SavedItemPage(obj);
+		shoppingcartPage = new	ShoppingCartPage(obj);
+		popupWindows=new PopupWindows(obj);
+	}
+
+	public void shoppingCartTestScenario(String machineName,String host,String port,String browser,String os,String browserVersion,String osVersion, String tcId){
+		try{
+			//1.Open application as member and navigate to PGP (any item)
+			openBrowser(machineName, host, port, browser, os, browserVersion, osVersion);
+			createObjects(browser);
+			popupWindows.continueShopping();
+			popupWindows.verifyUSFlagSelected();
+			signInToApp(retrieve("UserName"),retrieve("Password"));
+			shoppingcartPage.removeAllItemsandSaveItemsInMyShoppingCartPage();
+			waitTime(10);
+
+			//2.Open QV and add to cart
+			departmentNavigation.clickOnDepartmentSubCategoryOrPromoLink(retrieve("DepartmentOne"),retrieve("DepartmentOneSubCategory"));
+			productGridPage.clickOnQuickViewFromProductGridPage(retrieve("ProductOne"));
+			popupWindows.selectSizeFromQVPopup(retrieve("ProductOneSize"));
+			popupWindows.clickOnAddToCartFromQVPopup();
+
+			//3.Go to PDP (any item)
+			departmentNavigation.clickOnDepartmentSubCategoryOrPromoLink(retrieve("DepartmentTwo"),retrieve("DepartmentTwoSubCategory"));
+			savedProduct=productGridPage.selectProductInProductGridPage(retrieve("ProductTwo"));
+
+			//4.Click on Add to cart
+			savedProductSize=productDescriptionPage.selectSizeFromProductDescriptionPage(retrieve("ProductTwoSizeOne"));
+			productDescriptionPage.clickOnAddToCartFromProductDescriptionPage();
+
+			//5.Click on save item
+			productDescriptionPage.clickOnSaveItemFromProductDescriptionPage();
+			productDescriptionPage.verifyAndCloseSavedMessageInPDP();
+
+			//6.Select different size and save item.
+			mouseMoveToMiniCart();
+			sizeTwo=productDescriptionPage.selectSizeFromProductDescriptionPage(retrieve("ProductTwoSizeTwo"));
+			System.out.println(sizeTwo);
+			productDescriptionPage.clickOnSaveItemFromProductDescriptionPage();
+			productDescriptionPage.verifyAndCloseSavedMessageInPDP();
+
+			//7.Go to shopping cart and verify 2 items are added to cart and 2 items are in the saved items.
+			clickOnCart();
+			if(shoppingcartPage.getNumberOfProductListedInCartFromShoppingCartPage()==2){
+				testStepPassed("two items are displayed in shopping cart page");
+			}else{
+				testStepFailed("two items are not displayed in shopping cart page");
+			}
+			if(shoppingcartPage.getNumberOfProductListedInSavedItemFromShoppingCartPage()==2){
+				testStepPassed("two items are displayed in shopping cart in saved item page");
+			}else{
+				testStepFailed("two items are not displayed in shopping cart in saved item page");
+			}
+
+			//8.Click on add to cart from saved item section. Verify 3 items in the shopping cart and 1 item in the saved items.
+			shoppingcartPage.clickOnMoveToCartInSavedItemListFromShoppingCartPage(savedProduct, savedProductSize);
+			if(shoppingcartPage.getNumberOfProductListedInCartFromShoppingCartPage()==3){
+				testStepPassed("three items are displayed in shopping cart page");
+			}else{
+				testStepFailed("three items are not displayed in shopping cart page");
+			}	
+			if(shoppingcartPage.getNumberOfProductListedInSavedItemFromShoppingCartPage()==1){
+				testStepPassed("one item is displayed in shopping cart in saved item page");
+			}else{
+				testStepFailed("one item is not displayed in shopping cart in saved item page");
+			}
+
+			//9.Click on saved items link on shopping cart and go to saved items page.
+			shoppingcartPage.clickOnSavedItemLink();
+
+			//10.Click on add to cart and verify that the saved items section is empty.
+			shoppingcartPage.clickOnAddToCartButtonFromSavedItem(savedProduct, sizeTwo);
+			savedItemPage.verifySavedItemPageEmptyMessage();
+
+			//11.Go to shopping cart and verify that there are 4 items in the cart.
+			clickOnCart();
+			if(shoppingcartPage.getNumberOfProductListedInCartFromShoppingCartPage()==4){
+				testStepPassed("four items are displayed in shopping cart page");
+			}else{
+				testStepFailed("four items are not displayed in shopping cart page");
+			}	
+
+			//12.Go to Bundles page (for example - suit separates)
+			departmentNavigation.clickOnDepartmentSubCategoryOrPromoLink(retrieve("DepartmentThree"),retrieve("DepartmentThreeSubCategory"));
+
+			//13.Invoke QV for the first product and add to cart.
+			productGridPage.selectProductInProductGridPage(retrieve("ProductThree"));
+			productbundlePage.clickOnQuickViewFromBundleProductPage(retrieve("BundleProductOne"));
+			popupWindows.selectSizeFromQVPopup(retrieve("BundleProductOneSize"));
+			popupWindows.clickOnAddToCartFromQVPopup();
+
+			//14.Select 2 products in the bundle and click on add selected items to cart			
+			productbundlePage.clickOnQuickViewFromBundleProductPage(retrieve("BundleProductOne"));
+			popupWindows.selectSizeFromQVPopup(retrieve("BundleProductOneSize"));
+			popupWindows.typeQuantityInQVPopup(retrieve("BundleProductOneQuantity"));
+			waitTime(5);
+			popupWindows.clickOnAddToCartFromQVPopup();
+
+			//15.Go to shopping cart and verify that there are 7 items in the cart.
+			clickOnCart();
+			//			if(shoppingcartPage.getNumberOfProductListedInCartFromShoppingCartPage()==7 ||shoppingcartPage.getNumberOfProductListedInCartFromShoppingCartPage()==5){
+			if(shoppingcartPage.getNumberOfProductListedInCartFromShoppingCartPage()==7){	
+				testStepPassed("seven items are displayed in shopping cart page");
+			}else{
+				testStepFailed("seven items are not displayed in shopping cart page");
+			}
+
+			//16.Remove all the items and logout.
+			shoppingcartPage.removeAllItemInMyCartPage();
+			clickOnSignOut();
+		}
+		catch(Exception e){
+			testStepFailed(e.toString());
+		}
+		finally{
+			if(departmentNavigation.testCaseExecutionStatus ||
+					productbundlePage.testCaseExecutionStatus ||
+					productDescriptionPage.testCaseExecutionStatus ||
+					productGridPage.testCaseExecutionStatus ||
+					savedItemPage.testCaseExecutionStatus ||
+					shoppingcartPage.testCaseExecutionStatus ||
+					popupWindows.testCaseExecutionStatus ){
+				this.testCaseExecutionStatus=true;
+			}
+			driver.close();
+		}
+	}
+}*/
+package scenarios;
+
+
+
+import baseClass.BaseClass;
+import baseClass.HeaderLinks;
+import baseClass.PopupWindows;
+
+import mwPages.AboutMensWearhousePage;
+import mwPages.CATransparencyInSupplyChainsActPage;
+import mwPages.CheckOutPage;
+import mwPages.ClassicGiftCardPage;
+import mwPages.ContactUsPage;
+import mwPages.CorporateWearPage;
+import mwPages.CreateAccountPage;
+import mwPages.DepartmentNavigation;
+import mwPages.EGiftCardPage;
+import mwPages.FindStorePage;
+import mwPages.GiftCardsPage;
+import mwPages.GiftsPage;
+import mwPages.GuydLinesPage;
+import mwPages.HelpFAQsPage;
+import mwPages.HomePage;
+import mwPages.InternationalCheckoutPage;
+import mwPages.InternationalOrdersPage;
+import mwPages.InvestorRelationsPage;
+import mwPages.JoinOurTeamPage;
+import mwPages.LooksPage;
+import mwPages.MensWearhouseHomePage;
+import mwPages.MobileTermsPage;
+import mwPages.MyAccountAddressBookPage;
+import mwPages.MyAccountMySizePage;
+import mwPages.MyAccountMyStorePage;
+import mwPages.MyAccountOrderDetailPage;
+import mwPages.MyAccountOrderHistoryPage;
+import mwPages.MyAccountPage;
+import mwPages.MyAccountPaymentMethodsPage;
+import mwPages.MyAccountPerfectRewardsPage;
+import mwPages.OnlineReturnsPage;
+import mwPages.OrderConfirmationPage;
+import mwPages.PerfectFitCreditCardPage;
+import mwPages.PerfectFitCreditCardPaymentsPage;
+import mwPages.PerfectFitRewardsPage;
+import mwPages.PrivacySecurityPolicyPage;
+import mwPages.ProductBundlePage;
+import mwPages.ProductDescriptionPage;
+import mwPages.ProductGridPage;
+import mwPages.RecommendationsForYouPage;
+import mwPages.ReserveInStorePage;
+import mwPages.SavedItemPage;
+import mwPages.ShoppingCartPage;
+import mwPages.SiteMapPage;
+import mwPages.SocialNetwork;
+import mwPages.StoreLocatorPage;
+import mwPages.TermsofUsePage;
+//import mwPages.ProductDescriptionPage;
+
+//import baseClass.BaseClass;
+//import baseClass.PopupWindows;
+
+
+public class ShoppingCartTest extends PopupWindows{
+
+
+	private AboutMensWearhousePage aboutmenswearhousePage;
+	private CATransparencyInSupplyChainsActPage catransparencyinsupplychainsactPage;
+	private CheckOutPage checkoutPage;
+	private ClassicGiftCardPage classicgiftcardPage;
+	private ContactUsPage contactusPage;
+	private CorporateWearPage corporatewearPage;
+	private CreateAccountPage createaccountPage;
+	private DepartmentNavigation departmentnavigation;
+	private EGiftCardPage egiftcardPage;
+	private FindStorePage findstorePage;
+	private GiftCardsPage giftcardPage;
+	private GiftsPage giftsPage;
+	private GuydLinesPage guydlinesPage;
+	private HelpFAQsPage helpfaqsPage;
+	//private HomePage homePage;
+	private InternationalCheckoutPage internationalcheckoutPage;
+	private InternationalOrdersPage internationalordersPage;
+	private InvestorRelationsPage investorrelationsPage;
+	private JoinOurTeamPage joinourteamPage;
+	private LooksPage looksPage;
+	private MensWearhouseHomePage menswearhousehomePage;
+	private MobileTermsPage mobiletermsPage;
+	private MyAccountAddressBookPage myaccountaddressbookPage;
+	private MyAccountMySizePage myaccountmysizePage;
+	private MyAccountMyStorePage myaccountmystorePage;
+	private MyAccountOrderDetailPage myaccountorderdetailPage;
+	private MyAccountOrderHistoryPage myaccountorderhistoryPage;
+	private MyAccountPage myaccountPage;
+	private MyAccountPaymentMethodsPage myaccountpaymentmethodsPage;
+	private MyAccountPerfectRewardsPage myaccountperfectrewardsPage;
+	private OnlineReturnsPage onlinereturnsPage;
+	private OrderConfirmationPage orderconfirmationPage;
+	private PerfectFitCreditCardPage perfectFitcreditcardPage;
+	private PerfectFitCreditCardPaymentsPage perfectfitcreditcardpaymentsPage;
+	private PerfectFitRewardsPage perfectfitrewardsPage;
+	private PrivacySecurityPolicyPage privacysecuritypolicyPage;
+	private ProductBundlePage productbundlePage;
+	private ProductDescriptionPage pdp;
+	private ProductGridPage productGridPage;
+	private RecommendationsForYouPage recommendationsforyouPage;
+	private ReserveInStorePage reserveinstorePage;
+	private SavedItemPage saveditemPage;
+	private ShoppingCartPage shoppingcartPage;
+	private SiteMapPage sitemapPage;
+	private SocialNetwork socialnetwork;
+	private StoreLocatorPage storelocatorPage;
+	private TermsofUsePage termsofusePage;
+	//private PopupWindows popupwindows;
+	private HeaderLinks headerlink;
+	private HomePage homePage;
+	private PopupWindows popupwindows;
+	private ProductDescriptionPage productDescriptionPage;
+
+
+
+	private BaseClass obj;
+	public ShoppingCartTest(BaseClass obj) {
+		super(obj);
+		this.obj=obj;
+
+
+		
+	}
+	public void createObjects(String browser){
+
+		obj.driver=driver;
+		obj.currentBrowser=browser;
+		aboutmenswearhousePage = new 	AboutMensWearhousePage(obj);
+		catransparencyinsupplychainsactPage = new	CATransparencyInSupplyChainsActPage(obj);
+		checkoutPage = new	CheckOutPage(obj);
+		classicgiftcardPage = new	ClassicGiftCardPage(obj);
+		contactusPage = new	ContactUsPage(obj);
+		corporatewearPage = new	CorporateWearPage(obj);
+		createaccountPage = new	CreateAccountPage(obj);
+		departmentnavigation = new	DepartmentNavigation(obj);
+		egiftcardPage = new	EGiftCardPage(obj);
+		findstorePage = new	FindStorePage(obj);
+		giftcardPage = new	GiftCardsPage(obj);
+		giftsPage = new	GiftsPage(obj);
+		guydlinesPage = new	GuydLinesPage(obj);
+		helpfaqsPage = new	HelpFAQsPage(obj);
+		//homePage = new	HomePage(obj);
+		internationalcheckoutPage = new	InternationalCheckoutPage(obj);
+		internationalordersPage = new	InternationalOrdersPage(obj);
+		investorrelationsPage = new	InvestorRelationsPage(obj);
+		joinourteamPage = new	JoinOurTeamPage(obj);
+		looksPage = new	LooksPage(obj);
+		menswearhousehomePage = new	MensWearhouseHomePage(obj);
+		mobiletermsPage = new	MobileTermsPage(obj);
+		myaccountaddressbookPage = new	MyAccountAddressBookPage(obj);
+		myaccountmysizePage = new	MyAccountMySizePage(obj);
+		myaccountmystorePage = new	MyAccountMyStorePage(obj);
+		myaccountorderdetailPage = new	MyAccountOrderDetailPage(obj);
+		myaccountorderhistoryPage = new	MyAccountOrderHistoryPage(obj);
+		myaccountPage = new	MyAccountPage(obj);
+		myaccountpaymentmethodsPage = new	MyAccountPaymentMethodsPage(obj);
+		myaccountperfectrewardsPage = new	MyAccountPerfectRewardsPage(obj);
+		onlinereturnsPage = new	OnlineReturnsPage(obj);
+		orderconfirmationPage = new	OrderConfirmationPage(obj);
+		perfectFitcreditcardPage = new	PerfectFitCreditCardPage(obj);
+		perfectfitcreditcardpaymentsPage = new	PerfectFitCreditCardPaymentsPage(obj);
+		perfectfitrewardsPage = new	PerfectFitRewardsPage(obj);
+		privacysecuritypolicyPage = new	PrivacySecurityPolicyPage(obj);
+		productbundlePage = new	ProductBundlePage(obj);
+		pdp = new	ProductDescriptionPage(obj);
+		productGridPage = new	ProductGridPage(obj);
+		recommendationsforyouPage = new	RecommendationsForYouPage(obj);
+		reserveinstorePage = new	ReserveInStorePage(obj);
+		saveditemPage = new	SavedItemPage(obj);
+		shoppingcartPage = new	ShoppingCartPage(obj);
+		sitemapPage = new	SiteMapPage(obj);
+		socialnetwork = new	SocialNetwork(obj);
+		storelocatorPage = new	StoreLocatorPage(obj);
+		termsofusePage = new	TermsofUsePage(obj);
+		//popupwindows=new PopupWindows(obj);
+		headerlink=new HeaderLinks(obj);
+		popupwindows=new PopupWindows(obj);
+		homePage= new HomePage(obj);
+		productDescriptionPage = new ProductDescriptionPage(obj);
+	}
+
+
+	public void destroyObjects(){
+
+
+		aboutmenswearhousePage = null;
+		catransparencyinsupplychainsactPage = null;
+		checkoutPage = null;
+		classicgiftcardPage = null;
+		contactusPage = null;
+		corporatewearPage = null;
+		createaccountPage = null;
+		departmentnavigation = null;
+		egiftcardPage = null;
+		findstorePage = null;
+		giftcardPage = null;
+		giftsPage = null;
+		guydlinesPage = null;
+		helpfaqsPage = null;
+		//homePage = null;
+		internationalcheckoutPage = null;
+		internationalordersPage = null;
+		investorrelationsPage = null;
+		joinourteamPage = null;
+		looksPage = null;
+		menswearhousehomePage = null;
+		mobiletermsPage = null;
+		myaccountaddressbookPage = null;
+		myaccountmysizePage = null;
+		myaccountmystorePage = null;
+		myaccountorderdetailPage = null;
+		myaccountorderhistoryPage = null;
+		myaccountPage = null;
+		myaccountpaymentmethodsPage = null;
+		myaccountperfectrewardsPage = null;
+		onlinereturnsPage = null;
+		orderconfirmationPage = null;
+		perfectFitcreditcardPage = null;
+		perfectfitcreditcardpaymentsPage = null;
+		perfectfitrewardsPage = null;
+		privacysecuritypolicyPage = null;
+		productbundlePage = null;
+		pdp = null;
+		productGridPage = null;
+		recommendationsforyouPage = null;
+		reserveinstorePage = null;
+		saveditemPage = null;
+		shoppingcartPage = null;
+		sitemapPage = null;
+		socialnetwork = null;
+		storelocatorPage = null;
+		termsofusePage = null;
+		//popupwindows=null;
+		headerlink=null;
+		popupwindows=null;
+		homePage= null;
+		productDescriptionPage = null;
+	}
+
+
+
+
+	public void shoppingCartTestScenario(String machineName,String host,String port,String browser,String os,String browserVersion,String osVersion, String tcId){
+		try{
+
+			testStepInfo("");
+			testStepInfo("Opening Browser and Navigating to the URL");
+			testStepInfo("*****************************************************");
+			
+			openBrowser(machineName, host, port, browser, os, browserVersion, osVersion);
+			createObjects(browser);
+
+			if (browser.equalsIgnoreCase("Chrome")||browser.equalsIgnoreCase("Firefox")) 
+			{
+
+				getJSESSIONIDOnceBrowserInitiated();
+
+				getCLONEIDOnceBrowserInitiated();
+
+			}
+
+
+
+			
+
+			if (browser.equalsIgnoreCase("Safari")) 
+			{
+				verifySafariUSFlagSelected();
+				waitTime(5);
+			} 
+
+			else 
+			{
+				verifyUSFlagSelected();
+			}
+
+			//clickOnBackToTopLinkInFooter();
+			
+			homePage.ClickonHomePageLogo();
+
+			
+
+			if (browser.equalsIgnoreCase("Firefox")) 
+			{
+				homePage.verifyBrowserOutdatedMessageisDisplayedAndClosed();
+			}
+
+			
+			
+			
+			signInToApp(retrieve("UserName"),retrieve("Password"));
+
+
+			
+			
+			if (browser.equalsIgnoreCase("InternetExplorer")) 
+			{
+
+				shoppingcartPage.checkingtheshoppingbagcountemptyandifnotemptyingtheshoppinginIE();
+
+			}
+
+			else if (browser.equalsIgnoreCase("Safari")) 
+			{
+
+				shoppingcartPage.checkingtheSafarishoppingbagcountemptyandifnotemptyingtheshopping();
+
+			}
+
+			else 
+			{
+
+				shoppingcartPage.checkingtheshoppingbagcountemptyandifnotemptyingtheshopping();
+
+			}
+
+			//shoppingcartPage.checkingtheshoppingbagsaveditemisemptyandifnotemptyingthesavediteminshoppingbag();
+
+
+			testStepInfo("");
+			testStepInfo("Add an Product by clicking the Quick View in PGP page");
+			testStepInfo("******************************************************************");
+
+			departmentnavigation.clickOnDepartmentSubCategoryOrPromoLink(retrieve("DepartmentName"),retrieve("SubCategoryName"));
+
+			//productGridPage.scrolldownInProductGridPage();
+
+			productGridPage.VerifyProductslistedinPGPIfNotRefreshthePage();
+
+			productGridPage.clickOnQuickViewFromProductGridPage(retrieve("ProductName"));
+
+			productDescriptionPage.selectSizeFromQuickViewPagenew(retrieve("ProductSize"));
+
+			popupwindows.clickOnAddToShoppingBagFromQVPopup();
+
+			testStepInfo("");
+			testStepInfo("Add an Product in PDP page");
+			testStepInfo("***********************************");
+
+			departmentnavigation.clickOnDepartmentSubCategoryOrPromoLink(retrieve("DepartmentName2"),retrieve("SubCategoryName2"));
+
+			productGridPage.VerifyProductslistedinPGPIfNotRefreshthePage();
+
+			//productGridPage.selectProductInProductGridPage(retrieve("ProductName"));
+			
+			productGridPage.clickOnQuickViewFromProductGridPage(retrieve("ProductName"));
+
+			productGridPage.clickOnViewFullProductInformation();
+
+			productDescriptionPage.verifyProductDisplayedinPDPPageIfNotRefreshThePage();
+
+			productDescriptionPage.verifyProductDisplayedinPDPPageIfNotRefreshThePage();
+
+			productDescriptionPage.selectSizeFromProductDescriptionPagenew(retrieve("ProductSize"));
+
+			productDescriptionPage.clickPDPAddtoShoppingBagButton();	
+
+			testStepInfo("");
+			testStepInfo("Bag count after add product through QV and PDP page");
+			testStepInfo("*****************************************************************");
+
+			shoppingcartPage.shoppingbagcountafterqvpdp();
+
+			//homePage.ClickonHomePageLogo();
+
+			departmentnavigation.clickOnDepartmentSubCategoryOrPromoLink(retrieve("DepartmentName3"),retrieve("SubCategoryName3"));
+
+			productGridPage.VerifyProductslistedinPGPIfNotRefreshthePage();
+
+			productGridPage.selectProductInProductGridPage(retrieve("ProductName"));
+
+			productDescriptionPage.verifyProductDisplayedinPDPPageIfNotRefreshThePage();
+
+			testStepInfo("");
+			testStepInfo("Add First Product to Saved Items");
+			testStepInfo("****************************************");
+
+			productDescriptionPage.selectSizeFromProductDescriptionPagenew(retrieve("ProductSize"));
+
+			pdp.clickOnSaveItemFromProductDescriptionPageVerifyandClosemesg();
+
+			//pdp.verifyAndCloseSavedMessageInPDP();
+
+			waitTime(1);
+
+
+/*			testStepInfo("");
+			testStepInfo("Add Second Product to Saved Items");
+			testStepInfo("*******************************************");
+
+			productDescriptionPage.selectSizeFromProductDescriptionPagenew(retrieve("ProductSize"));
+
+			pdp.clickOnSaveItemFromProductDescriptionPageVerifyandClosemesg();
+
+			pdp.verifyAndCloseSavedMessageInPDP();
+
+			waitTime(1);*/
+
+			testStepInfo("");
+			testStepInfo("Checking Saved Items are there in the Bag");
+			testStepInfo("***************************************************");
+
+			if (browser.equalsIgnoreCase("InternetExplorer")) 
+			{
+
+				shoppingcartPage.checksaveditemsaddedtotheshoppingbaginIE();
+
+			}
+
+			else if (browser.equalsIgnoreCase("Safari")) 
+			{
+
+				shoppingcartPage.checkSafarisaveditemsaddedtotheshoppingbag();
+
+			}
+
+			else 
+			{
+
+				//viewshoppingbag();
+
+				shoppingcartPage.checksaveditemsaddedtotheshoppingbag();
+
+			}
+
+
+			testStepInfo("");
+			testStepInfo("Adding Saved Items to the Bag & Verifying the count of Bag after adding the saved items");
+			testStepInfo("********************************************************************************************************");
+
+			shoppingcartPage.addsaveditemstotheshoppingbag();
+
+			shoppingcartPage.checkingshoppingbagcountafteraddingsaveditemstobag();		
+			
+			clickOnBackToTopLinkInFooter();
+
+			shoppingcartPage.removeItemsfromShoppingCarttoCountOne_New();
+
+			String ProductCount = shoppingcartPage.getProductCountinShoppingCartPage("ProductCount");
+
+			if (ProductCount.equalsIgnoreCase("1 item(s)")) 
+			{	
+				testStepPassed("Product Count is reduced to 1");
+			}
+
+			else 
+			{
+				testStepFailed("Product Count is not reduced to 1. Product count in bag "+ProductCount);
+			}
+
+			shoppingcartPage.clickEditIteminShoppingCart();
+
+			shoppingcartPage.entereditproductvalues(retrieve("ProductQuantity"));
+
+			shoppingcartPage.clickUpdateButton();
+
+			String ProductCount2 = shoppingcartPage.getProductCountinShoppingCartPage("ProductCount");
+
+			if (ProductCount2.equalsIgnoreCase("2 item(s)")) 
+			{
+				testStepPassed("Product Count is updated to 2");
+			}
+
+			else 
+			{
+				testStepFailed("Product Count is not updated to 2. Product count in bag "+ProductCount);
+			}
+			
+			
+			shoppingcartPage.removeItemsfromShoppingCarttoCountOne_New();
+
+			String ProductCount3 = shoppingcartPage.getProductCountinShoppingCartPage("ProductCount");
+
+			if (ProductCount3.equalsIgnoreCase("1 item(s)")) 
+			{	
+				testStepPassed("Product Count is reduced to 1");
+			}
+
+			else 
+			{
+				testStepFailed("Product Count is not reduced to 1. Product count in bag "+ProductCount3);
+			}
+
+
+
+			shoppingcartPage.clickRegisteredUserChekoutButton();
+			
+			checkoutPage.EnterCardCvvandContinueinEditBillingModalforShoppingCart(retrieve("CreditCardCvv"));
+
+			checkoutPage.fillShippingTabDetails(retrieve("ShippingFirstName"), retrieve("ShippingLastName"), retrieve("ShippingAddress"), retrieve("ShippingCity"), retrieve("ShippingState"), retrieve("ShippingZipcode"), retrieve("ShippingTelephone"));
+
+			checkoutPage.fillPaymentCreditCardNo(retrieve("CreditCardNo"));
+
+			checkoutPage.fillPaymentCreditCardCvv(retrieve("CreditCardCvv"));
+
+			checkoutPage.fillPaymentSavedCardCreditCardCvv(retrieve("CreditCardCvv"));
+
+			checkoutPage.selectPaymentCreditCardExpityMonth(retrieve("CreditCardExpiryMonth"));
+
+			checkoutPage.selectPaymentCreditCardExpityYear(retrieve("CreditCardExpiryYear"));
+
+			checkoutPage.fillPaymentBillingDetails(retrieve("BillingFirstName"), retrieve("BillingLastName"), retrieve("BillingAddress"), retrieve("BillingCity"), retrieve("BillingState"), retrieve("BillingZipCode"), retrieve("BillingTelephone"));
+
+			checkoutPage.clickPaymentContinue();
+
+			/*checkoutPage.EnterCvvinReviewTab(retrieve("CreditCardCvv"));
+
+			checkoutPage.EnterSavedCvvinReviewTab(retrieve("CreditCardCvv"));
+*/
+			homePage.ClickonHomePageLogo();
+
+			if (browser.equalsIgnoreCase("InternetExplorer")) 
+			{
+
+				shoppingcartPage.checkingtheshoppingbagcountemptyandifnotemptyingtheshoppinginIE();
+
+			}
+
+			else if (browser.equalsIgnoreCase("Safari")) 
+			{
+
+				shoppingcartPage.checkingtheSafarishoppingbagcountemptyandifnotemptyingtheshopping();
+
+			}
+
+			else 
+			{
+
+				shoppingcartPage.checkingtheshoppingbagcountemptyandifnotemptyingtheshopping();
+
+			}
+
+			homePage.ClickonHomePageLogo();
+
+			if (browser.equalsIgnoreCase("Chrome") || browser.equalsIgnoreCase("Firefox")) 
+			{
+
+				homePage.ClickonSignoutinHeaderlinkgreetinglink();
+
+			} 
+
+			else if (browser.equalsIgnoreCase("Safari")) 
+			{
+
+				homePage.ClickonSafariSignOutlink();
+
+			}
+
+			else 
+			{
+
+				homePage.ClickonIESignoutinHeaderlinkgreetinglink();
+
+			}
+
+			homePage.verifyUserLoggedOutSuccessfully();
+
+		}
+		catch(Exception e)
+		{
+			testStepFailed(e.toString());
+		}
+		finally
+		{
+			if(aboutmenswearhousePage.testCaseExecutionStatus || catransparencyinsupplychainsactPage.testCaseExecutionStatus || checkoutPage.testCaseExecutionStatus || classicgiftcardPage.testCaseExecutionStatus || contactusPage.testCaseExecutionStatus || corporatewearPage.testCaseExecutionStatus || createaccountPage.testCaseExecutionStatus || departmentnavigation.testCaseExecutionStatus || egiftcardPage.testCaseExecutionStatus || findstorePage.testCaseExecutionStatus || giftcardPage.testCaseExecutionStatus || giftsPage.testCaseExecutionStatus || guydlinesPage.testCaseExecutionStatus || helpfaqsPage.testCaseExecutionStatus || homePage.testCaseExecutionStatus || internationalcheckoutPage.testCaseExecutionStatus || internationalordersPage.testCaseExecutionStatus || investorrelationsPage.testCaseExecutionStatus || joinourteamPage.testCaseExecutionStatus || looksPage.testCaseExecutionStatus || menswearhousehomePage.testCaseExecutionStatus || mobiletermsPage.testCaseExecutionStatus || myaccountaddressbookPage.testCaseExecutionStatus || myaccountmysizePage.testCaseExecutionStatus || myaccountmystorePage.testCaseExecutionStatus || myaccountorderdetailPage.testCaseExecutionStatus || myaccountorderhistoryPage.testCaseExecutionStatus || myaccountPage.testCaseExecutionStatus || myaccountpaymentmethodsPage.testCaseExecutionStatus || myaccountperfectrewardsPage.testCaseExecutionStatus || onlinereturnsPage.testCaseExecutionStatus || orderconfirmationPage.testCaseExecutionStatus || perfectFitcreditcardPage.testCaseExecutionStatus || perfectfitcreditcardpaymentsPage.testCaseExecutionStatus || perfectfitrewardsPage.testCaseExecutionStatus || privacysecuritypolicyPage.testCaseExecutionStatus || productbundlePage.testCaseExecutionStatus || pdp.testCaseExecutionStatus || productGridPage.testCaseExecutionStatus || recommendationsforyouPage.testCaseExecutionStatus || reserveinstorePage.testCaseExecutionStatus || saveditemPage.testCaseExecutionStatus || shoppingcartPage.testCaseExecutionStatus || sitemapPage.testCaseExecutionStatus || socialnetwork.testCaseExecutionStatus || storelocatorPage.testCaseExecutionStatus || termsofusePage.testCaseExecutionStatus || popupwindows.testCaseExecutionStatus || headerlink.testCaseExecutionStatus){
+				this.testCaseExecutionStatus=true;
+			}
+			driver.quit();
+			destroyObjects();
+		}
+		testStepInfo("");
+		testStepInfo("*******************************");
+		testStepInfo("Test Execution Completed");
+		testStepInfo("*******************************");
+	}
+}
