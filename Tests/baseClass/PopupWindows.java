@@ -68,7 +68,7 @@ public class PopupWindows extends HeaderLinks {
 	public static final String txt_EmailAddress_guest = "Email Address TextBox #xpath=//div[@class='has-acct clearfix']//input[@name='logonId']";
 	public static final String txt_password_guest = "Email Address TextBox #xpath=//div[@class='has-acct clearfix']//input[@name='logonPassword']";
 	public static final String txt_signIn_guest = "Email Address TextBox #xpath=//div[@class='has-acct clearfix']//a[@class='sign-in blue-btn']";
-	
+
 	public static final String btn_ContinueShoppingClose ="Continue Shopping Close#xpath=//div[contains(@id,'tinycontent')]//a[contains(@id,'closeButton')]";
 
 	public final static String lnk_ViewFullProductInformation = "View Full Product Information Link#xpath=//*[contains(@id,'prod-info')]//*[contains(text(),'View Full Product Information')]";
@@ -138,10 +138,10 @@ public class PopupWindows extends HeaderLinks {
 		} catch (Exception e) {
 			testStepPassed("The Feedback Popup is not displayed");
 		}
-		
+
 	}
-	
-	
+
+
 	public void clickOnInternationalShippingLink(){
 		clickOn(img_Country_Flag);
 	}
@@ -157,29 +157,32 @@ public class PopupWindows extends HeaderLinks {
 		clickOn(btn_ProceedasUS);
 	}
 
-	
-	
-	
+
+
+
 	public void verifyUSFlagSelected()
 	{
 		try {
 			testStepInfo("");
 			testStepInfo("Change the Customer to US Customer");
 			testStepInfo("*********************************************");
-			
+
 			Actions action = new Actions(driver);
 			action.sendKeys(Keys.PAGE_DOWN).perform();
 			waitTime(2);
+			/*moveToElement("//footer[@id='pg-footer']//a[contains(text(),'Terms of Use')]");
+			waitTime(2);
+			scrollbottomofPage();*/
 			String countryName = driver.findElement(By.xpath("//i[@id='borderfree-flag-img']")).getAttribute("style");
 			System.out.println(countryName);
 			String countryNameEdited = countryName.substring(countryName.lastIndexOf("/")+1, countryName.lastIndexOf("."));
 			System.out.println("Country edited : "+countryNameEdited);
-			
+
 			if (countryNameEdited.equalsIgnoreCase("US")) 
 			{
 				testStepPassed("Country Selected is US");
 			}
-			
+
 			else 
 			{
 				proceedAsUSCustomer();
@@ -189,7 +192,7 @@ public class PopupWindows extends HeaderLinks {
 					testStepPassed("Shitp to is Changed to US");
 				}
 			}
-/*	//waitTime(1);
+			/*	//waitTime(1);
 			if(!countryName.substring(countryName.length() - 4, countryName.length() - 1).equalsIgnoreCase("US")){
 				//waitTime(1);
 				proceedAsUSCustomer();	
@@ -208,14 +211,14 @@ public class PopupWindows extends HeaderLinks {
 		}
 	}
 
-	
-	
+
+
 	public void verifySafariUSFlagSelected(){
-		
+
 		testStepInfo("");
 		testStepInfo("Change the Customer to US Customer");
 		testStepInfo("***********************************************");
-		
+
 		waitTime(1);
 		String countryName = driver.findElement(By.xpath("//i[@id='borderfree-flag-img']")).getAttribute("class");
 		//waitTime(1);
@@ -233,9 +236,9 @@ public class PopupWindows extends HeaderLinks {
 			}
 		}
 	}
-	
-	
-	
+
+
+
 	public void closeInternationalShippingPoup(){
 		clickOn(ele_CloseInternationalShippingPopup);
 	}
@@ -342,22 +345,22 @@ public class PopupWindows extends HeaderLinks {
 		//waitForElementToDisplay(lbl_MyAccount,elementLoadWaitTime);
 		//waitForElement(lnk_Header_Greeting);
 	}
-	
-public void userSignIn(String Username, String Password){
-		
+
+	public void userSignIn(String Username, String Password){
+
 		try {
 			if (driver.findElement(By.xpath("//input[contains(@id,'logonID')]")).isDisplayed()) {
 				typeIn(txt_EmailAddress,Username);
 				typeIn(txt_Password,Password);
 				clickOn(btn_SignIn);
 			}
-			
+
 		} catch (Exception e) {
 			testStepFailed("The signIn Tab is not found");
 		}
-		
+
 	}
-	
+
 	public void guestSignIn(String Username, String Password)
 	{
 		waitTime(1);
@@ -386,7 +389,7 @@ public void userSignIn(String Username, String Password){
 		clickOn(btn_CreateAccount);
 	}
 
-	
+
 	public void SignInWithoutSignInLinkClicked(String Username, String Password){
 		try {
 			waitTime(1);
@@ -397,19 +400,19 @@ public void userSignIn(String Username, String Password){
 			testStepFailed("Failed to Login into the Application");
 		}
 	}
-	
-	
+
+
 	public void signInToApp(String Username, String Password){
 
 		try{
 			//Scrolling the Page Up
-			
-		/*	Actions action = new Actions(driver);
+
+			/*	Actions action = new Actions(driver);
 			action.sendKeys(Keys.PAGE_UP).perform();*/
 			testStepInfo("");
 			testStepInfo("Logging into the Application");
 			testStepInfo("**********************************");
-			
+
 			clickOn(lnk_Header_SignIn);
 			waitTime(1);
 			signIn(Username,Password);
@@ -418,12 +421,12 @@ public void userSignIn(String Username, String Password){
 		}catch(Exception e){
 			testStepFailed("Failed to Login into the Application");
 		}
-	
+
 	}
 
-	
-	
-	
+
+
+
 
 	public void verifySignInOverLay(){
 		//if(isElementDisplayed(overlay_SignIn))
@@ -542,7 +545,7 @@ public void userSignIn(String Username, String Password){
 	}
 	public void continueShoppingPopupClose(){
 
-		
+
 		testStepInfo("");
 		testStepInfo("Checking the Continue Shopping page is displayed. If displayed closing the popup");
 		testStepInfo("*************************************************************************************************");
@@ -557,7 +560,7 @@ public void userSignIn(String Username, String Password){
 			testStepPassed("Continue Shopping Popup window is not displayed");
 		}
 	}
-	
+
 	public static final String lnk_QVPopupClose = "QuickViewPopupClose Link#xpath=//div[contains(@id,'quickInfoPopup')]//a[contains(@id,'WC_QuickInfo_Link_close')]";
 	public void clickOnViewFullProductInformation(){
 		waitTime(2);
@@ -573,23 +576,23 @@ public void userSignIn(String Username, String Password){
 		WebDriverWait wait=new WebDriverWait(driver,implicitlyWaitTime);
 		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("//*[contains(@id,'sign-in-submit')]")));
 	}
-	
+
 	public void URLNavigateBack(){
 		driver.navigate().back();
 	}
-	
+
 
 	//public static final String txt_ropisOrderConfirm = "ROPIS order cconfirm#xpath=//h2[contains(text(), 'Thank you for your reservation')]";
-	
+
 	public static final String txt_ropisOrderConfirm = "ROPIS order cconfirm#xpath=//div//h2[contains(text(),'thanks, your reservation is confirmed!')]";
 
 	public static final String txt_ropisOrderConfirm1 = "ROPIS order cconfirm#xpath=//h2[contains(text(),'Thank you for your reservation')]";
-	
+
 	public boolean verifyROPISOrderConfirmation() {
 		boolean flag = false;
 		try {
 			waitForElement(txt_ropisOrderConfirm);	
-			
+
 			if(isElementDisplayed(txt_ropisOrderConfirm)||isElementDisplayed(txt_ropisOrderConfirm1))
 			{
 				testStepPassed("ROPIS Order is Confirmed");
@@ -604,25 +607,25 @@ public void userSignIn(String Username, String Password){
 			flag = false;
 		}
 		return flag;
-	
+
 	}
-	
+
 	public static final String drp_StoreURL = "Store URL dropdown #xpath=//div[contains(@modulename, 'cmc/foundation/StorePreviewDialog')]//div[contains(@modulename, 'cmc/foundation/InputTextValueSelector')]//following-sibling::div[contains(@style, '/drop_down_list.png')]";
 	public static final String btn_Options = "Options button #xpath=//div[contains(@modulename, 'cmc/foundation/StorePreviewDialog')]//div[text()='Options']";
 	public static final String radio_specificdate = "Specific date and time radio button #xpath=//div[text()='Specify date and time']";
 	public static final String txt_YearMonthDate = "Enter Year Month Date #xpath=//div[text()='Specify date and time']//following::div[contains(@modulename, 'cmc/foundation/DatePicker')]//input[@type='text']";
 	public static final String txt_Time = "Enter Time #xpath=//div[text()='Specify date and time']//following::div[contains(@modulename, 'cmc/foundation/TimePicker')]//input[@type='text']";
 	public static final String btn_LaunchStorePreview = "Launch store preview button #xpath=//div[text()='Launch Store Preview']";
-	
+
 	public void selectStore(String storename) {
 		waitForElement(drp_StoreURL);
 		clickOn(drp_StoreURL);
 		waitTime(1);
 		driver.findElement(By.xpath("//div[contains(@modulename, 'cmc/foundation/LongListItem')]//div[contains(text(), '"+ storename +"')]")).click();
-		
+
 	}
-	
-	
+
+
 	public void selectDate(String year, String time) {
 		waitForElement(btn_Options);
 		clickOn(btn_Options);
@@ -632,15 +635,46 @@ public void userSignIn(String Username, String Password){
 		clearEditBox(txt_Time);
 		typeIn(txt_Time, time);
 		clickOn(btn_LaunchStorePreview);
-		
-	}
-	
 
-	
-	
-	
-	
-	
-	
-	
+	}
+
+
+
+	public void selectUSFlag()
+	{
+		try 
+		{
+			testStepInfo("");
+			testStepInfo("Change the Customer to US Customer");
+			testStepInfo("*********************************************");
+
+			waitTime(2);
+			scrollbottomofPage();
+			waitTime(2);
+			scrollbottomofPage();
+			String countryName = driver.findElement(By.xpath("//i[@id='borderfree-flag-img']")).getAttribute("style");
+			System.out.println(countryName);
+			String countryNameEdited = countryName.substring(countryName.lastIndexOf("/")+1, countryName.lastIndexOf("."));
+			System.out.println("Country edited : "+countryNameEdited);
+			proceedAsUSCustomer();
+			waitTime(3);
+			if (countryNameEdited.equalsIgnoreCase("US")) 
+			{
+				testStepPassed("Shitp to is Changed to US");
+			}
+			else 
+			{
+				testStepFailed("Shipt To is not Changed to US");
+			}
+		} 
+		catch (Exception e) 
+		{
+			testStepFailed("Shipt To is not Changed to US");
+		}
+	}
+
+
+
+
+
 }

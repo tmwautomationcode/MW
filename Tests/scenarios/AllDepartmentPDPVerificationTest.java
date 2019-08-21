@@ -83,10 +83,10 @@ public class AllDepartmentPDPVerificationTest extends PopupWindows
 
 			createObjects(browser);
 
-			verifyUSFlagSelected();
-
+			selectUSFlag();
+			
 			homePage.ClickonHomePageLogo();
-
+			
 			String projectDirectory = System.getProperty("user.dir");
 
 			String filePath = projectDirectory+"\\DepartmentPDPUrl\\AllDepartmentPDPUrlReport.xls";

@@ -79,7 +79,7 @@ public class AllDepartmentGetPDPURLTest extends PopupWindows
 
 			createObjects(browser);
 			
-			verifyUSFlagSelected();
+			selectUSFlag();
 			
 			homePage.ClickonHomePageLogo();
 
