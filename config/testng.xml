@@ -30,7 +30,7 @@
         <exclude name="DepartmentLinksAndSubCategoryLinksNavigationTestPartTwo"/>
         <exclude name="DepartmentLinksAndSubCategoryLinksNavigationTestPartThree"/>
         <exclude name="DepartmentLinksAndSubCategoryLinksNavigationTestPartFour"/>
-        <exclude name="AllDepartmentGetPDPURLTest"/>
+        <include name="AllDepartmentGetPDPURLTest"/>
         <include name="AllDepartmentPDPVerificationTest"/>
       </methods>
     </classes>
