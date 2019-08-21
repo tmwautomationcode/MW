@@ -78,6 +78,10 @@ public class AllDepartmentGetPDPURLTest extends PopupWindows
 			openBrowser(machineName, host, port, browser, os, browserVersion, osVersion);
 
 			createObjects(browser);
+			
+			verifyUSFlagSelected();
+			
+			homePage.ClickonHomePageLogo();
 
 			//parentWindow=driver.getWindowHandle();
 

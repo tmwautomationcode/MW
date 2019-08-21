@@ -83,6 +83,10 @@ public class AllDepartmentPDPVerificationTest extends PopupWindows
 
 			createObjects(browser);
 
+			verifyUSFlagSelected();
+
+			homePage.ClickonHomePageLogo();
+
 			String projectDirectory = System.getProperty("user.dir");
 
 			String filePath = projectDirectory+"\\DepartmentPDPUrl\\AllDepartmentPDPUrlReport.xls";
@@ -110,15 +114,15 @@ public class AllDepartmentPDPVerificationTest extends PopupWindows
 				String subCategory= sh.getCell(2, row).getContents();
 
 				String productNo= sh.getCell(3, row).getContents();
-				
+
 				int productIntNo = Integer.parseInt(productNo);
 
 				String productName= sh.getCell(4, row).getContents();
 
 				String productUrl= sh.getCell(5, row).getContents();
-				
+
 				String result;
-				
+
 				testStepInfo("");
 				testStepInfo("No : "+row);
 				testStepInfo("Department Name : "+department);
@@ -134,27 +138,27 @@ public class AllDepartmentPDPVerificationTest extends PopupWindows
 				if (productDescriptionPage.verifyProductDisplayedinPDP()) 
 				{
 					testStepPassed("PDP Page is displayed");
-					
+
 					result = "PDP Page is displayed";
-					
+
 					CreateNewRowandEnterValuesAllDepartmentsPDPVerificationResult(department, subCategory, productIntNo, productName, productUrl, result);
 				}
 
 				else if (productGridPage.check404PageisDisplayed()) 
 				{
 					testStepFailed("404 Page is displayed in PDP");
-					
+
 					result = "404 Page is displayed";
-					
+
 					CreateNewRowandEnterValuesAllDepartmentsPDPVerificationResult(department, subCategory, productIntNo, productName, productUrl, result);
 				}
 
 				else 
 				{
 					testStepFailed("Blank Page is displayed in PDP");
-					
+
 					result = "Blank Page is displayed";
-					
+
 					CreateNewRowandEnterValuesAllDepartmentsPDPVerificationResult(department, subCategory, productIntNo, productName, productUrl, result);
 				}
 			}
