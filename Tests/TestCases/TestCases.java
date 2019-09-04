@@ -27,12 +27,14 @@ import scenarios.AddToCartDifferentCloneIdTest;
 import scenarios.AutoScrollOnPGPTest;
 import scenarios.AllDepartmentPDPVerificationTest;
 import scenarios.AllDepartmentGetPDPURLTest;
+import scenarios.AllDepartmentGetPDPURLDeleteTest;
 import scenarios.BillingPaypalCheckoutRegisteredTest;
 import scenarios.BundlesShirtAndTieTest;
 import scenarios.BundlesSuitSeparatesTest;
 import scenarios.CMCValidationTest;
 import scenarios.CategoryShoppingCartTest;
 import scenarios.CertonaTest;
+import scenarios.ColorSwatchVerificationTest;
 import scenarios.DepartmentLinksAndSubCategoryLinksNavigationTest;
 import scenarios.EGiftCardMemberTest;
 import scenarios.EGiftCardWithRegularProductTest;
@@ -111,12 +113,14 @@ public class TestCases
 	AddToCartDifferentCloneIdTest addToCartDifferentCloneIdTest;
 	AutoScrollOnPGPTest autoScrollOnPGPTest;
 	AllDepartmentGetPDPURLTest allDepartmentGetPDPURLTest;
+	AllDepartmentGetPDPURLDeleteTest allDepartmentGetPDPURLDeleteTest;
 	AllDepartmentPDPVerificationTest allDepartmentPDPVerificationTest;
 	BillingPaypalCheckoutRegisteredTest billingPaypalCheckoutRegisteredTest;
 	BundlesShirtAndTieTest bundlesShirtAndTieTest;
 	BundlesSuitSeparatesTest bundlesSuitSeparatesTest;
 	CategoryShoppingCartTest categoryShoppingCartTest;
 	CertonaTest certonaTest;
+	ColorSwatchVerificationTest colorSwatchVerificationTest;
 	DepartmentLinksAndSubCategoryLinksNavigationTest departmentLinksAndSubCategoryLinksNavigationTest;
 	EGiftCardMemberTest eGiftCardMemberTest;
 	EGiftCardWithRegularProductTest eGiftCardWithRegularProductTest;
@@ -160,7 +164,6 @@ public class TestCases
 	UserRegistrationWithPFTest userRegistrationWithPFTest;
 	UserWithPFCreationAddingRentalProductVerifyOrderHistoryValidationTest userWithPFCreationAddingRentalProductVerifyOrderHistoryValidationTest;
 	VisualSearchTest visualSearchTest;
-
 	StatusCodeCheckTest statusCodeCheckTest;
 	UserRegistrationWithoutPFTest userRegistrationWithoutPFTest;
 	GiftcardBalanceValidationTest giftcardBalanceValidationTest;
@@ -401,6 +404,31 @@ public class TestCases
 
 	/*******************************************************************************************************************************************************************************************************************************************************************/
 
+	/*******************************************************************************************************************************************************************************************************************************************************************/
+	/**
+	 * @throws IOException *****************************************************************************************************************************************************************************************************************************************************************/
+
+	@Test(alwaysRun=true)
+	@Parameters({"selenium.machinename","selenium.host", "selenium.port", "selenium.browser", "selenium.os", "selenium.browserVersion", "selenium.osVersion","TestData.SheetNumber"})
+	public void AllDepartmentGetPDPURLDeleteTest(String machineName,String host,String port,String browser,String os,String browserVersion,String osVersion,String sheetNo,Method method) throws IOException {
+		try{
+			TestStart("All Department Get PDP URL Delete Test",machineName,method.getName());
+			allDepartmentGetPDPURLDeleteTest=new AllDepartmentGetPDPURLDeleteTest(obj);
+			
+			for(int i=0;i<allDepartmentGetPDPURLDeleteTest.iterationCount.size();i++){
+				allDepartmentGetPDPURLDeleteTest.dataRowNo=Integer.parseInt(allDepartmentGetPDPURLDeleteTest.iterationCount.get(i).toString());
+				allDepartmentGetPDPURLDeleteTest.testStepInfo("DataSet: "+(i+1));
+				allDepartmentGetPDPURLDeleteTest.AllDepartmentGetPDPURLDeleteTestScenario(machineName,host, port, browser, os, browserVersion,osVersion,method.getName());
+			}
+		}finally{
+			obj.testCaseExecutionStatus=allDepartmentGetPDPURLDeleteTest.testCaseExecutionStatus;
+			TestEnd();
+		}
+	}
+
+	/*******************************************************************************************************************************************************************************************************************************************************************/
+
+	
 	@Test(alwaysRun=true)
 	@Parameters({"selenium.machinename","selenium.host", "selenium.port", "selenium.browser", "selenium.os", "selenium.browserVersion", "selenium.osVersion","TestData.SheetNumber"})
 	public void BillingPaypalCheckoutRegisteredTest(String machineName,String host,String port,String browser,String os,String browserVersion,String osVersion,String sheetNo,Method method) throws MalformedURLException{
@@ -531,6 +559,29 @@ public class TestCases
 			TestEnd();
 		}
 	}
+	/*******************************************************************************************************************************************************************************************************************************************************************/
+	/*******************************************************************************************************************************************************************************************************************************************************************/
+	/**
+	 * @throws IOException *****************************************************************************************************************************************************************************************************************************************************************/
+
+	@Test(alwaysRun=true)
+	@Parameters({"selenium.machinename","selenium.host", "selenium.port", "selenium.browser", "selenium.os", "selenium.browserVersion", "selenium.osVersion","TestData.SheetNumber"})
+	public void ColorSwatchVerificationTest(String machineName,String host,String port,String browser,String os,String browserVersion,String osVersion,String sheetNo,Method method) throws IOException {
+		try{
+			TestStart("Color Swatch Verification Test",machineName,method.getName());
+			colorSwatchVerificationTest=new ColorSwatchVerificationTest(obj);
+			
+			for(int i=0;i<colorSwatchVerificationTest.iterationCount.size();i++){
+				colorSwatchVerificationTest.dataRowNo=Integer.parseInt(colorSwatchVerificationTest.iterationCount.get(i).toString());
+				colorSwatchVerificationTest.testStepInfo("DataSet: "+(i+1));
+				colorSwatchVerificationTest.ColorSwatchVerificationTestScenario(machineName,host, port, browser, os, browserVersion,osVersion,method.getName());
+			}
+		}finally{
+			obj.testCaseExecutionStatus=colorSwatchVerificationTest.testCaseExecutionStatus;
+			TestEnd();
+		}
+	}
+
 	/*******************************************************************************************************************************************************************************************************************************************************************/
 
 	

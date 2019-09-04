@@ -1796,6 +1796,104 @@ public void verifyCorrespondingPGPisDisplayedWithDepartmentBreadCrumbinPGPisdisp
 	}
 }
 
+
+
+public void validatingColorSwatch()
+{
+	List<WebElement> productsListinPGP = driver.findElements(By.xpath("//a[contains(@class,'js-editable-link product-name')]"));
+
+	int productsListinPGPCount = productsListinPGP.size();
+
+	testStepPassed("Products Count in PGP : "+productsListinPGPCount);
+	
+	for (int i = 1; i <= productsListinPGPCount; i++) 
+	{
+		if (driver.findElement(By.xpath("//section[contains(@id,'results-products')]//ul[contains(@id,'products')]//li["+i+"]//div[contains(@class,'color-swatch')]")).isDisplayed()) 
+		{
+			testStepPassed("Color Swatch is displayed for the product : "+i);
+			
+			List<WebElement> colorSwatches = driver.findElements(By.xpath("//section[contains(@id,'results-products')]//ul[contains(@id,'products')]//li["+i+"]//div[contains(@class,'color-swatch')]//a"));
+			
+			int colorSwatchesCount = colorSwatches.size();
+
+			testStepPassed("Color Swatches Count in Product "+i+" : "+colorSwatchesCount);
+			
+			if (colorSwatchesCount>1) 
+			{
+				String defaultColorSwatch = driver.findElement(By.xpath("(//section[contains(@id,'results-products')]//ul[contains(@id,'products')]//li[1]//div[contains(@class,'color-swatch')]//a)[1]")).getAttribute("title");
+				
+				testStepInfo("Default Color Swatch of First Color Swatch product : "+defaultColorSwatch);
+				
+				String defaultColorofDress = driver.findElement(By.xpath("(//section[contains(@id,'results-products')]//ul[contains(@id,'products')]//li[1]//picture//img[contains(@class,'image')])[1]")).getAttribute("src");
+				
+				testStepInfo("Default Color of First Color Swatch product : "+defaultColorofDress);
+				
+				waitTime(2);
+				
+				if (defaultColorofDress.contains(defaultColorSwatch)) 
+				{
+					testStepPassed("Default Product Color is same as Default Color Swatch");
+					
+					for (int j = 2; j <= colorSwatchesCount; j++) 
+					{
+						waitTime(2);
+						
+						WebElement colorSwatch = driver.findElement(By.xpath("(//section[contains(@id,'results-products')]//ul[contains(@id,'products')]//li[1]//div[contains(@class,'color-swatch')]//a)["+j+"]"));
+						
+						colorSwatch.click();
+						
+						String colorSwatchNameloop = driver.findElement(By.xpath("(//section[contains(@id,'results-products')]//ul[contains(@id,'products')]//li[1]//div[contains(@class,'color-swatch')]//a)["+j+"]")).getAttribute("title");
+						
+						testStepInfo("Color Swatch Name of Swatch No "+j+" : "+colorSwatchNameloop);
+						
+						String colorNameofDressloop = driver.findElement(By.xpath("(//section[contains(@id,'results-products')]//ul[contains(@id,'products')]//li[1]//picture//img[contains(@class,'image')])[1]")).getAttribute("src");
+						
+						testStepInfo("Color Name of product for Swatch No "+j+" : "+colorNameofDressloop);
+
+						waitTime(2);
+						
+						if (colorNameofDressloop.contains(colorSwatchNameloop)) 
+						{
+							testStepPassed("Product Color is same as Color Swatch seleted");
+						}
+						else 
+						{
+							testStepFailed("Product Color is not same as Color Swatch selected");
+						}
+					}
+				} 
+				else 
+				{
+					testStepFailed("Default Product Color is not same as Default Color Swatch");
+				}
+			} 
+			else 
+			{
+				testStepWarning("Only one color is displayed in color swatch");
+			}
+			
+			break;
+		} 
+		else 
+		{
+			testStepWarning("Color Swatch is not displayed for the product : "+i);
+		}
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	
 }
 

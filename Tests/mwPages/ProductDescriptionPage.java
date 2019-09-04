@@ -83,7 +83,7 @@ public class ProductDescriptionPage extends PopupWindows{
 	public final static String lnk_EmailInPDP_New = "Email Link in PDP#xpath=//div[contains(@id,'social-buttons')]//a[contains(@title,'Email')]";
 
 	public final static String lbl_ProductPrice = "Product Price #xpath=//section[contains(@id,'prod-info')]//div[contains(@class,'pdp-price-section')]//div[contains(@class,'reg-price')]//p";
-	
+
 	public static final String txt_ropisStoreAvailable = "Ropis Store Available#xpath=//div[contains(@class, 'js-store-available')]//span[contains(text(), 'Available')]";
 	public static final String btn_Reserve = "Reserve button#xpath=//div[contains(@class, 'js-store-available')]//button/span[contains(text(), 'Reserve')]";
 	public static final String txt_ropisFirstName = "ROPIS Firstname#xpath=//input[@id='txtRopisFirstName']";
@@ -203,13 +203,13 @@ public class ProductDescriptionPage extends PopupWindows{
 		}
 	}
 
-		String departmentBreadcrumbs;
+	String departmentBreadcrumbs;
 	public final static String lnk_departmentBreadcrumb = "Department Breadcrump #xpath=//div[contains(@id,'widget_breadcrumb')]/span[2]/a";
 	public String getDepartmentBreadCrumbinPDP() {
-	
+
 		String departmentBreadcrumb = null;
 		try {
-			
+
 			if (driver.findElement(By.xpath("//div[contains(@id,'widget_breadcrumb')]/span[2]/a")).isDisplayed()) {
 				testStepPassed("Department Bread Crumb in PDP is displayed");
 				departmentBreadcrumbs = driver.findElement(By.xpath("//div[contains(@id,'widget_breadcrumb')]/span[2]/a[text()]")).getAttribute("innerText");
@@ -217,29 +217,29 @@ public class ProductDescriptionPage extends PopupWindows{
 				System.out.println("departmentBreadcrumb : "+departmentBreadcrumb);
 				//String Dep1 = (Dep.substring(Dep.lastIndexOf("TO")+3)).toLowerCase();
 				//departmentBreadcrumb = Dep1.substring(0,1).toUpperCase() + Dep1.substring(1).toLowerCase();
-		
+
 				clickOn(lnk_departmentBreadcrumb);
 				waitTime(2);
-				
+
 				testStepPassed("Department Bread crumb : " + departmentBreadcrumb);
-				}
-		else {
-			testStepFailed("Department Bread crumb is not displayed");
-		}
+			}
+			else {
+				testStepFailed("Department Bread crumb is not displayed");
+			}
 		} catch(Exception e) {
 			testStepFailed("Department Bread crumb is not displayed");
 		}
 		return departmentBreadcrumb; ////div[contains(@id,'widget_breadcrumb')]/h1
 	}
-	
-		
+
+
 	String subCategoryBreadcrumbs;
 	public final static String lnk_subcategoryBreadcrumb = "Subcategory Breadcrump #xpath=//div[contains(@id,'widget_breadcrumb')]/span[3]/a";
 	public String getSubCategoryBreadCrumbinPDP() {
-	
+
 		String subCategoryBreadcrumb = null;
 		try {
-			
+
 			if (driver.findElement(By.xpath("//div[contains(@id,'widget_breadcrumb')]/span[3]/a")).isDisplayed()) {
 				testStepPassed("SubCategory Bread Crumb in PDP is displayed");
 				subCategoryBreadcrumbs = driver.findElement(By.xpath("//div[contains(@id,'widget_breadcrumb')]/span[3]/a[text()]")).getAttribute("innerText");
@@ -247,15 +247,15 @@ public class ProductDescriptionPage extends PopupWindows{
 				System.out.println(subCategoryBreadcrumb);
 				//'String Dep1 = (Dep.substring(Dep.lastIndexOf("TO")+3)).toLowerCase();
 				//subCategoryBreadcrumb = Dep1.substring(0,1).toUpperCase() + Dep1.substring(1).toLowerCase();
-		
+
 				clickOn(lnk_subcategoryBreadcrumb);
 				waitTime(2);
-				
+
 				testStepPassed("SubCategory Bread crumb in PDP : " + subCategoryBreadcrumb);
-				}
+			}
 			else {
-			testStepFailed("SubCategory Bread crumb is not displayed");
-		}
+				testStepFailed("SubCategory Bread crumb is not displayed");
+			}
 		} catch(Exception e) {
 			testStepFailed("SubCategory Bread crumb is not displayed");
 		}
@@ -354,38 +354,41 @@ public class ProductDescriptionPage extends PopupWindows{
 
 		}
 	}
-	
+
 	public void verifythecolorswatch()
 	{
-		
+
 		try{
 			if(driver.findElement(By.xpath("//div[contains(@class,'colorways clearfix js-colorways')]")).isDisplayed())
 			{
 				List<WebElement> Productcolours = driver.findElements(By.xpath("//div[@class='color-swatch']//a[contains(@class,'js-swatch-item')]"));
 				int colours =Productcolours.size();
 				for(int i=1; i<=colours; i++){
-				
+
 					driver.findElement(By.xpath("(//div[@class='color-swatch']//a[contains(@class,'js-swatch-item')])["+i+"]")).click();
-				    String colourswatchname=driver.findElement(By.xpath("(//div[@class='color-swatch']//a[contains(@class,'js-swatch-item')])["+i+"]")).getAttribute("title");
-				    //System.out.println("colour name :" +colourswatchname);
-				    String productcolourname=driver.findElement(By.xpath("//img[contains(@class,'js-image-zoom')]")).getAttribute("src");
-				    //System.out.println("colour in product :" +productcolourname);
-				    if(productcolourname.contains(colourswatchname)){
-				    	testStepPassed("PDP Clickable Swatch:" +colourswatchname+ "PDP Main Image :" +productcolourname);
-				    	
-				  	    }
-				    else{
-				    	testStepFailed("PDP Clickable Swatch:" +colourswatchname+ "PDP Main Image :" +productcolourname);
-				    }
-				    
+					String colourswatchname=driver.findElement(By.xpath("(//div[@class='color-swatch']//a[contains(@class,'js-swatch-item')])["+i+"]")).getAttribute("title");
+					//System.out.println("colour name :" +colourswatchname);
+					String productcolourname=driver.findElement(By.xpath("//img[contains(@class,'js-image-zoom')]")).getAttribute("src");
+					//System.out.println("colour in product :" +productcolourname);
+					if(productcolourname.contains(colourswatchname))
+					{
+						testStepPassed("PDP Clickable Swatch:" +colourswatchname+ "PDP Main Image :" +productcolourname);
+					}
+					else
+					{
+						testStepFailed("PDP Clickable Swatch:" +colourswatchname+ "PDP Main Image :" +productcolourname);
+					}
+
 				}
 			}
-			else{
+			else
+			{
 				testStepFailed("colorswatch is not present");
 			}
-			}
-		catch(Exception e){
-                     testStepFailed("colorswatch is not displayed");
+		}
+		catch(Exception e)
+		{
+			testStepFailed("colorswatch is not displayed");
 		}
 	}
 
@@ -403,7 +406,7 @@ public class ProductDescriptionPage extends PopupWindows{
 			testStepFailed(e.toString());
 		}
 	}
-	
+
 	public void verifySizechartpopupPDP()
 	{
 		try
@@ -526,7 +529,7 @@ public class ProductDescriptionPage extends PopupWindows{
 				testStepPassed("PDP page is loaded fully");
 			}
 		} catch (Exception e) {
-			
+
 			driver.navigate().refresh();
 			waitTime(2);
 			if (driver.findElement(By.xpath("//section[contains(@id,'pdp')]//section[contains(@id,'prod-info')]")).isDisplayed()) {
@@ -546,7 +549,7 @@ public class ProductDescriptionPage extends PopupWindows{
 				testStepPassed("PDP page is loaded fully");
 			}
 		} catch (Exception e) {
-			
+
 			driver.navigate().refresh();
 			//waitTime(1);
 			if (driver.findElement(By.xpath("//section[contains(@id,'pdp')]//section[contains(@id,'prod-info')]")).isDisplayed()) {
@@ -566,7 +569,7 @@ public class ProductDescriptionPage extends PopupWindows{
 				testStepPassed("PDP page is loaded fully");
 			}
 		} catch (Exception e) {
-			
+
 			driver.navigate().refresh();
 			waitTime(3);
 			if (driver.findElement(By.xpath("//div[contains(@class,'js-bundle pdp-container')]")).isDisplayed()) {
@@ -695,11 +698,11 @@ public class ProductDescriptionPage extends PopupWindows{
 
 
 	public void verifyviewscountinQV(){
-		
+
 		try{
 			if(driver.findElement(By.xpath("//div[contains(@class,'js-product-views product-views')]")).isDisplayed()){
 				//if(elementPresent("xpath for viewscount=//div[contains(@class,'js-product-views product-views')]")){
-				
+
 				String peoplesviewscountinqv =driver.findElement(By.xpath("//div[contains(@class,'js-product-views product-views')]")).getText();
 				/*String viewscountinqv=peoplesviewscountinqv.substring(0);
 				int countinqv =Integer.parseInt(viewscountinqv);
@@ -711,39 +714,39 @@ public class ProductDescriptionPage extends PopupWindows{
 				{
 					testStepFailed("count is lesser than 50:" +countinqv);
 				}*/
-				
+
 				String Final[]=peoplesviewscountinqv.split(" VIEWS");
-			    String a= Final[0];
-			    System.out.println(Final[0]);
-			     int countinqv=Integer.parseInt(a);
-			     if(countinqv > 50){
-						testStepPassed("count is greater than 50:" +countinqv);
-					}
-					else
-					{
-						testStepInfo("count is lesser than 50:" +countinqv);
-					}
-				
-				
-				
-				
+				String a= Final[0];
+				System.out.println(Final[0]);
+				int countinqv=Integer.parseInt(a);
+				if(countinqv > 50){
+					testStepPassed("count is greater than 50:" +countinqv);
+				}
+				else
+				{
+					testStepInfo("count is lesser than 50:" +countinqv);
+				}
+
+
+
+
 			}
 			else{testStepInfo("views count is not displayed in QV");
 			}
 		}catch(Exception e){
-			
+
 		}
-		
+
 	}
 
-public void verifyviewscountinPDP(){
-	
-	try{
-		if(driver.findElement(By.xpath("//div[contains(@class,'js-product-views product-views')]")).isDisplayed()){
-			//if(elementPresent("xpath for viewscount=//div[contains(@class,'js-product-views product-views')]")){
-			
-			String peoplesviewscountinqv =driver.findElement(By.xpath("//div[contains(@class,'js-product-views product-views')]")).getText();
-			/*String viewscountinqv=peoplesviewscountinqv.substring(0);
+	public void verifyviewscountinPDP(){
+
+		try{
+			if(driver.findElement(By.xpath("//div[contains(@class,'js-product-views product-views')]")).isDisplayed()){
+				//if(elementPresent("xpath for viewscount=//div[contains(@class,'js-product-views product-views')]")){
+
+				String peoplesviewscountinqv =driver.findElement(By.xpath("//div[contains(@class,'js-product-views product-views')]")).getText();
+				/*String viewscountinqv=peoplesviewscountinqv.substring(0);
 			int countinqv =Integer.parseInt(viewscountinqv);
 			testStepPassed("count in QV:" +countinqv);
 			if(countinqv > 50.00){
@@ -753,30 +756,30 @@ public void verifyviewscountinPDP(){
 			{
 				testStepFailed("count is lesser than 50:" +countinqv);
 			}*/
-			
-			String Final[]=peoplesviewscountinqv.split(" VIEWS");
-		    String a= Final[0];
-		    System.out.println(Final[0]);
-		     int countinqv=Integer.parseInt(a);
-		     if(countinqv > 50){
+
+				String Final[]=peoplesviewscountinqv.split(" VIEWS");
+				String a= Final[0];
+				System.out.println(Final[0]);
+				int countinqv=Integer.parseInt(a);
+				if(countinqv > 50){
 					testStepPassed("count is greater than 50:" +countinqv);
 				}
 				else
 				{
 					testStepInfo("count is lesser than 50:" +countinqv);
 				}
-			
-			
-			
-			
+
+
+
+
+			}
+			else{testStepInfo("views count is not displayed in QV");
+			}
+		}catch(Exception e){
+
 		}
-		else{testStepInfo("views count is not displayed in QV");
-		}
-	}catch(Exception e){
-		
+
 	}
-	
-}
 	public String getJSESSIONIDAFTERADDINGPRODUCT(){
 
 		String Jsession = driver.manage().getCookieNamed("JSESSIONID").toString();
@@ -844,7 +847,7 @@ public void verifyviewscountinPDP(){
 			}
 
 		} catch (Exception e) {
-			
+
 			testStepPassed("The Size dropdown is not displayed");
 		}
 		return size;
@@ -860,9 +863,9 @@ public void verifyviewscountinPDP(){
 
 		try {
 			waitTime(2);
-			
+
 			mouseOver(lnk_QVPopupClose);
-			
+
 			if (driver.findElement(By.xpath("//div[contains(@class,'rw')]//div[contains(@class,'size-dropdown js-size-dropdown')]//div[@id='ada-qv-curr-size']")).isDisplayed()) 
 			{
 				clickOn(drp_size_item);
@@ -891,7 +894,7 @@ public void verifyviewscountinPDP(){
 			}
 
 		} catch (Exception e) {
-		
+
 			testStepPassed("The Size dropdown is not displayed");
 		}
 		return size;
@@ -942,7 +945,7 @@ public void verifyviewscountinPDP(){
 			}
 
 		} catch (Exception e) {
-			
+
 			testStepPassed("The Size dropdown is not displayed");
 		}
 		return size;
@@ -1124,7 +1127,7 @@ public void verifyviewscountinPDP(){
 			testStepFailed("Add to Shopping Button is not found");
 		}
 	}
-	
+
 	public static final String suggestedSearchesProductLin = "Suggested Searches First Product link#xpath=(//div[@id='search_bar']//div[contains(@class,'tt-dropdown-custom')]/div[contains(@class, 'tt-suggestions tt-suggestions-custom')]//div[contains(@class, 'tt-suggestions-list')]/a)[1]";
 	public void suggestedSearchesProductLink(){
 		try{
@@ -1240,7 +1243,7 @@ public void verifyviewscountinPDP(){
 			}
 
 		} catch (Exception e) {
-			
+
 			testStepPassed("The Size dropdown is not displayed");
 		}
 		return size;
@@ -2048,13 +2051,13 @@ public void verifyviewscountinPDP(){
 				waitTime(2);
 				clickOn(btn_Reserve);
 				//clickOnSpecialElement(btn_Reserve);
-		}
+			}
 			else if(elementPresent(txt_ropisStoreUnavailable)) {
 				clickOn(btn_ropisChangeStore);
 				typeIn(txt_changeStoreNumber, zipcode1);
 				clickOn(btn_Search);
 				List<WebElement> store = driver.findElements(By.xpath(".//*[@id='selectChangeStoreModal']//div[contains(@class, 'js-pdp-store-result-details')]/div"));
-		
+
 				if(store.size() > 0) {
 					if(driver.findElement(By.xpath("//*[@id='selectChangeStoreModal']//div[contains(@class, 'js-pdp-store-result-details')]/div//p/span[contains(text(), 'Available')]")).isDisplayed()) {
 						driver.findElement(By.xpath("(//*[@id='selectChangeStoreModal']//div[contains(@class, 'js-pdp-store-result-details')]/div//p/span[contains(text(), 'Available')])[1]")).click();
@@ -2069,28 +2072,28 @@ public void verifyviewscountinPDP(){
 					else {
 						testStepFailed("No Store is available");
 					}
-						
-					}
-					
-	
+
 				}
-			
+
+
+			}
+
 			typeIn(txt_ropisFirstName, firstName);
 			typeIn(txt_ropisLastName, lastName);
 			typeIn(txt_ropisEmail, email);
 			typeIn(txt_ropisPhone, phone);
 			driver.findElement(By.xpath("//input[@id='txtRopisPhone']")).sendKeys(Keys.TAB);
 			if(driver.findElement(By.xpath("//input[@id='btnRopisFormSubmit']")).isEnabled()) {
-			clickOn(btn_ropisReserve); }
+				clickOn(btn_ropisReserve); }
 			else  {
 				testStepFailed("Reserve button is disabled");
 			}
 			waitTime(4);
-	}
-		catch(Exception e){
-			
 		}
-}
+		catch(Exception e){
+
+		}
+	}
 
 
 	public String selectproductfromROPISPDPcertona(){
@@ -2113,7 +2116,7 @@ public void verifyviewscountinPDP(){
 			testStepFailed("ROPIS product recommendation certona widget is not found");
 		}
 		return ROPISRecommendedSize;
-	
+
 	}
 
 	public String GetPDPselectedSize(){
@@ -2139,7 +2142,7 @@ public void verifyviewscountinPDP(){
 			if (driver.findElement(By.xpath("//div[contains(@class,'ropis-reserve-more-widget')]//section[contains(@class,'certona-widget')]")).isDisplayed()) {
 				int prodcount = Integer.parseInt(ProductCount);
 				for(int i = 1; i <= prodcount; i++)
-					{
+				{
 					clickOnSpecialElement("Add button for product from reserve more certona widget#xpath=(//div[contains(@class,'ropis-reserve-more-widget')]//section[contains(@class,'certona-widget')]//div[contains(@aria-hidden,'false')])["+i+"]//a[contains(@class,'add-to-reserve')]");
 					if (driver.findElement(By.xpath("//p[contains(text(),' More Item(s) added to Your Reservation')]")).isDisplayed())
 					{
@@ -2173,7 +2176,7 @@ public void verifyviewscountinPDP(){
 			testStepFailed("Reserve more product certona widget is not displayed");
 		}
 		return ProductCount;
-		
+
 	}
 
 	public String verifyRemoveProductcountinROPISReservationPage(){
@@ -2219,51 +2222,51 @@ public void verifyviewscountinPDP(){
 
 		try{
 			List<WebElement> Widgetcount = driver.findElements(By.xpath("//div[contains(@class,'ropis-reserve-more-widget')]/div[contains(@class,'ropis-reserve-category')]"));
-		 	int CertonaWidgetcount = Widgetcount.size();
-		 	for (int i = 1; i <=CertonaWidgetcount; i++) 
-		 	{
-		 		  if(isElementPresent("(//div[contains(@class,'ropis-reserve-more')]//div[contains(@class,'certona-widget')])["+i+"]", 5))
-		 		  {
-		 			if(elementPresent("#xpath=(//div[contains(@class,'ropis-reserve-more')]//div[contains(@class,'certona-widget')])["+i+"]//div[contains(@class,'select-size-btn')]"))	
-		 			 {
-		 					clickOnSpecialElement("Select size link in certona widget #xpath=(//div[contains(@class,'select-size-btn')])[1]");
-					 		clickOnSpecialElement("Select size from certona widget #xpath=(//ul[contains(@class,'ropis-size-list')]/li)[1]");
-					 		if(elementPresent("#xpath=//div[contains(text(),'Additional inventory may be available in-store')]"))	
-					 		{
-					 			testStepWarning("Additional inventory may be available in-store. Visit your nearest Men's Wearhouse for more selection ");
-					 			
-					 			
-					 			
-					 			if(elementPresent("change#xpath=(//div[contains(@class,'ropis-reserve-category__size-section')]//a)["+i+"]"))
-					 			{
-					 				waitTime(2);
-					 		
-					 			clickOnSpecialElement("change#xpath=(//div[contains(@class,'ropis-reserve-category__size-section')]//a)["+i+"]");
-					 			waitTime(2);
-					 			List<WebElement> Sizecount = driver.findElements(By.xpath("//ul[contains(@class,'js-ropis-size-list')]/li"));
-					 		 	int SizeFilterSizeCount = Sizecount.size();
-					 		 	for (int r = 1; r <=SizeFilterSizeCount; r++) {
-					 		 		//clickOnSpecialElement("change#xpath=(//div[contains(@class,'ropis-reserve-category__size-section')]//a)["+i+"]");
-					 		 		String Sizevalue = driver.findElement(By.xpath("(//ul[contains(@class,'js-ropis-size-list')]/li)["+r+"]")).getAttribute("title");
-					 		 		System.out.println(Sizevalue);
-					 		 		clickOnSpecialElement("'"+Sizevalue+"' Filter Value#xpath=(//ul[contains(@class,'js-ropis-size-list')]/li)["+r+"]");
-					 		 		if(elementPresent("#xpath=//div[contains(text(),'Additional inventory may be available in-store')]"))	
-							 		{
-					 		 			testStepWarning("Additional inventory may be available in-store. Visit your nearest Men's Wearhouse for more selection ");
-					 		 			clickOnSpecialElement("change#xpath=(//div[contains(@class,'ropis-reserve-category__size-section')]//a)["+i+"]");
-					 		 			//if (driver.findElement(By.xpath("(//div[contains(@class,'ropis-reserve-more')]//div[contains(@class,'certona-widget')])["+i+"]")).isDisplayed()) {
-					 						
-					 		 		}
-					 		 		else{
-					 		 			
-					 		 			for(int m = 1; m <=1; m++)
-						 				{
-					 						testStepPassed("Adding Product from QV "+ i +" Certona Widget");
-					 						mouseOver("product image#xpath=((//div[contains(@class,'ropis-reserve-more-widget')]//section[contains(@class,'certona-widget')])["+i+"]//div[contains(@aria-hidden,'false')])["+m+"]");
-					 						clickOnSpecialElement("Product QA button#xpath=((//div[contains(@class,'ropis-reserve-more-widget')]//section[contains(@class,'certona-widget')])["+i+"]//div[contains(@aria-hidden,'false')])["+m+"]//span[contains(text(),'Quick View')]");
+			int CertonaWidgetcount = Widgetcount.size();
+			for (int i = 1; i <=CertonaWidgetcount; i++) 
+			{
+				if(isElementPresent("(//div[contains(@class,'ropis-reserve-more')]//div[contains(@class,'certona-widget')])["+i+"]", 5))
+				{
+					if(elementPresent("#xpath=(//div[contains(@class,'ropis-reserve-more')]//div[contains(@class,'certona-widget')])["+i+"]//div[contains(@class,'select-size-btn')]"))	
+					{
+						clickOnSpecialElement("Select size link in certona widget #xpath=(//div[contains(@class,'select-size-btn')])[1]");
+						clickOnSpecialElement("Select size from certona widget #xpath=(//ul[contains(@class,'ropis-size-list')]/li)[1]");
+						if(elementPresent("#xpath=//div[contains(text(),'Additional inventory may be available in-store')]"))	
+						{
+							testStepWarning("Additional inventory may be available in-store. Visit your nearest Men's Wearhouse for more selection ");
+
+
+
+							if(elementPresent("change#xpath=(//div[contains(@class,'ropis-reserve-category__size-section')]//a)["+i+"]"))
+							{
+								waitTime(2);
+
+								clickOnSpecialElement("change#xpath=(//div[contains(@class,'ropis-reserve-category__size-section')]//a)["+i+"]");
+								waitTime(2);
+								List<WebElement> Sizecount = driver.findElements(By.xpath("//ul[contains(@class,'js-ropis-size-list')]/li"));
+								int SizeFilterSizeCount = Sizecount.size();
+								for (int r = 1; r <=SizeFilterSizeCount; r++) {
+									//clickOnSpecialElement("change#xpath=(//div[contains(@class,'ropis-reserve-category__size-section')]//a)["+i+"]");
+									String Sizevalue = driver.findElement(By.xpath("(//ul[contains(@class,'js-ropis-size-list')]/li)["+r+"]")).getAttribute("title");
+									System.out.println(Sizevalue);
+									clickOnSpecialElement("'"+Sizevalue+"' Filter Value#xpath=(//ul[contains(@class,'js-ropis-size-list')]/li)["+r+"]");
+									if(elementPresent("#xpath=//div[contains(text(),'Additional inventory may be available in-store')]"))	
+									{
+										testStepWarning("Additional inventory may be available in-store. Visit your nearest Men's Wearhouse for more selection ");
+										clickOnSpecialElement("change#xpath=(//div[contains(@class,'ropis-reserve-category__size-section')]//a)["+i+"]");
+										//if (driver.findElement(By.xpath("(//div[contains(@class,'ropis-reserve-more')]//div[contains(@class,'certona-widget')])["+i+"]")).isDisplayed()) {
+
+									}
+									else{
+
+										for(int m = 1; m <=1; m++)
+										{
+											testStepPassed("Adding Product from QV "+ i +" Certona Widget");
+											mouseOver("product image#xpath=((//div[contains(@class,'ropis-reserve-more-widget')]//section[contains(@class,'certona-widget')])["+i+"]//div[contains(@aria-hidden,'false')])["+m+"]");
+											clickOnSpecialElement("Product QA button#xpath=((//div[contains(@class,'ropis-reserve-more-widget')]//section[contains(@class,'certona-widget')])["+i+"]//div[contains(@aria-hidden,'false')])["+m+"]//span[contains(text(),'Quick View')]");
 											clickOnSpecialElement("Add button for product from QV reserve more certona widget#xpath=//div[contains(@class,'ropis-custom-qv__info')]//a[contains(@class,'add-to-reserve-qv')]");
 											if (driver.findElement(By.xpath("//p[contains(text(),'More Item(s) added to Your Reservation')]")).isDisplayed())
-												{
+											{
 												testStepPassed("More item added to Your reservation message is displayed ");
 												String ReserveItemCount = driver.findElement(By.xpath("//div[contains(@class,'ropis-reserve-review')]//span[contains(@class,'ropis-reserve-items-count')]")).getText();
 												testStepPassed("Reservation product count: " + ReserveItemCount);
@@ -2280,74 +2283,74 @@ public void verifyviewscountinPDP(){
 												}
 
 
+											}
+
+											JavascriptExecutor jse = (JavascriptExecutor)driver;
+											jse.executeScript("window.scrollBy(0,-250)", "");
+
+
+
 										}
-										
-										JavascriptExecutor jse = (JavascriptExecutor)driver;
-										jse.executeScript("window.scrollBy(0,-250)", "");
-									
-				 		 			
-				 		 			
-				 		 		}
-					 		 			break;
-					 		 			
-					 		 		}
-					 		 
-					 		 	}
-					 			}
-					 			
-					 		}
-					 		
-					 		else 
-				 			{
-				 				for(int k = 1; k <=2; k++)
-				 				{
-				 					testStepPassed("Adding Product from "+ i +" Certona Widget");
-									clickOnSpecialElement("Add button for product from reserve more certona widget#xpath=((//div[contains(@class,'ropis-reserve-more-widget')]//section[contains(@class,'certona-widget')])["+i+"]//div[contains(@aria-hidden,'false')])["+k+"]//a[contains(@class,'add-to-reserve')]");
-									if (driver.findElement(By.xpath("//p[contains(text(),'More Item(s) added to Your Reservation')]")).isDisplayed())
-									{
-										testStepPassed("More item added to Your reservation message is displayed ");
-										String ReserveItemCount = driver.findElement(By.xpath("//div[contains(@class,'ropis-reserve-review')]//span[contains(@class,'ropis-reserve-items-count')]")).getText();
-										testStepPassed("Reservation product count: " + ReserveItemCount);
-										WebElement Certonawidget = driver.findElement(By.xpath("(//div[contains(@class,'ropis-reserve-more-widget')]//section[contains(@class,'certona-widget')])["+i+"]"));
-										JavascriptExecutor jse = (JavascriptExecutor)driver;
-										jse.executeScript("arguments[0].scrollIntoView();",Certonawidget );
-										if (driver.findElement(By.xpath("(//div[contains(@class,'ropis-reserve-more-widget')]//section[contains(@class,'certona-widget')]//div[contains(@aria-hidden,'false')])["+k+"]//a[contains(@class,'add-to-reserve')]//span[contains(text(),'Added')]")).isDisplayed()) 
-										{
-											testStepPassed("Add to reserve text is changed to Added ");
-										}
-										else 
-										{
-											testStepFailed("Add to reserve text is not changed to Added  ");
-										}
+										break;
 
 									}
-									else
-									{
-										testStepFailed("More item added to Your reservation message is not displayed ");
-									}
-									JavascriptExecutor jse = (JavascriptExecutor)driver;
-									jse.executeScript("window.scrollBy(0,-250)", "");
+
 								}
+							}
 
-				 			}
-					 	
-		 			 }
-		 			 else
-		 			 {
-		 				if(elementPresent("#xpath=//div[contains(text(),'Additional inventory may be available in-store')]"))	
-				 		{
-				 			testStepWarning("Additional inventory may be available in-store. Visit your nearest Men's Wearhouse for more selection ");
-				 		}
-		 				else
-		 				{
-		 					for(int k = 1; k <=2; k++)
-			 				{
-		 						testStepPassed("Adding Product from QV "+ i +" Certona Widget");
-		 						mouseOver("product image#xpath=((//div[contains(@class,'ropis-reserve-more-widget')]//section[contains(@class,'certona-widget')])["+i+"]//div[contains(@aria-hidden,'false')])["+k+"]");
-		 						clickOnSpecialElement("Product QA button#xpath=((//div[contains(@class,'ropis-reserve-more-widget')]//section[contains(@class,'certona-widget')])["+i+"]//div[contains(@aria-hidden,'false')])["+k+"]//span[contains(text(),'Quick View')]");
+						}
+
+						else 
+						{
+							for(int k = 1; k <=2; k++)
+							{
+								testStepPassed("Adding Product from "+ i +" Certona Widget");
+								clickOnSpecialElement("Add button for product from reserve more certona widget#xpath=((//div[contains(@class,'ropis-reserve-more-widget')]//section[contains(@class,'certona-widget')])["+i+"]//div[contains(@aria-hidden,'false')])["+k+"]//a[contains(@class,'add-to-reserve')]");
+								if (driver.findElement(By.xpath("//p[contains(text(),'More Item(s) added to Your Reservation')]")).isDisplayed())
+								{
+									testStepPassed("More item added to Your reservation message is displayed ");
+									String ReserveItemCount = driver.findElement(By.xpath("//div[contains(@class,'ropis-reserve-review')]//span[contains(@class,'ropis-reserve-items-count')]")).getText();
+									testStepPassed("Reservation product count: " + ReserveItemCount);
+									WebElement Certonawidget = driver.findElement(By.xpath("(//div[contains(@class,'ropis-reserve-more-widget')]//section[contains(@class,'certona-widget')])["+i+"]"));
+									JavascriptExecutor jse = (JavascriptExecutor)driver;
+									jse.executeScript("arguments[0].scrollIntoView();",Certonawidget );
+									if (driver.findElement(By.xpath("(//div[contains(@class,'ropis-reserve-more-widget')]//section[contains(@class,'certona-widget')]//div[contains(@aria-hidden,'false')])["+k+"]//a[contains(@class,'add-to-reserve')]//span[contains(text(),'Added')]")).isDisplayed()) 
+									{
+										testStepPassed("Add to reserve text is changed to Added ");
+									}
+									else 
+									{
+										testStepFailed("Add to reserve text is not changed to Added  ");
+									}
+
+								}
+								else
+								{
+									testStepFailed("More item added to Your reservation message is not displayed ");
+								}
+								JavascriptExecutor jse = (JavascriptExecutor)driver;
+								jse.executeScript("window.scrollBy(0,-250)", "");
+							}
+
+						}
+
+					}
+					else
+					{
+						if(elementPresent("#xpath=//div[contains(text(),'Additional inventory may be available in-store')]"))	
+						{
+							testStepWarning("Additional inventory may be available in-store. Visit your nearest Men's Wearhouse for more selection ");
+						}
+						else
+						{
+							for(int k = 1; k <=2; k++)
+							{
+								testStepPassed("Adding Product from QV "+ i +" Certona Widget");
+								mouseOver("product image#xpath=((//div[contains(@class,'ropis-reserve-more-widget')]//section[contains(@class,'certona-widget')])["+i+"]//div[contains(@aria-hidden,'false')])["+k+"]");
+								clickOnSpecialElement("Product QA button#xpath=((//div[contains(@class,'ropis-reserve-more-widget')]//section[contains(@class,'certona-widget')])["+i+"]//div[contains(@aria-hidden,'false')])["+k+"]//span[contains(text(),'Quick View')]");
 								clickOnSpecialElement("Add button for product from QV reserve more certona widget#xpath=//div[contains(@class,'ropis-custom-qv__info')]//a[contains(@class,'add-to-reserve-qv')]");
 								if (driver.findElement(By.xpath("//p[contains(text(),'More Item(s) added to Your Reservation')]")).isDisplayed())
-									{
+								{
 									testStepPassed("More item added to Your reservation message is displayed ");
 									String ReserveItemCount = driver.findElement(By.xpath("//div[contains(@class,'ropis-reserve-review')]//span[contains(@class,'ropis-reserve-items-count')]")).getText();
 									testStepPassed("Reservation product count: " + ReserveItemCount);
@@ -2371,14 +2374,14 @@ public void verifyviewscountinPDP(){
 								JavascriptExecutor jse = (JavascriptExecutor)driver;
 								jse.executeScript("window.scrollBy(0,-250)", "");
 							}
-		 				}
-		 			 }
-		 		  }
-		 	else
-			 	{
-		 			testStepFailed("ROPIS reserve more certona widget is not displayed"); 
-			 	}
-		 	}
+						}
+					}
+				}
+				else
+				{
+					testStepFailed("ROPIS reserve more certona widget is not displayed"); 
+				}
+			}
 
 		}catch(Exception e){
 			testStepFailed("Reserve more product certona widget is not displayed");
@@ -2431,16 +2434,16 @@ public void verifyviewscountinPDP(){
 					}
 					clickOnSpecialElement(" Load Next set of products button #xpath=//div[contains(@class,'ropis-reserve-more-widget')]//button[contains(@aria-label,'Load Next Set of products')]");
 				}
-				
+
 			}	
 
 		}catch(Exception e){
 			testStepFailed("Reserve more product certona widget is not displayed");
 		}
 		return ProductCount;
-		
+
 	}
-	
+
 	public String getProductPromotionNameInPDP(String promotionName) {
 		String locator="promotion name in PDP#xpath=//div[contains(@class, 'promo-section')]//p[contains(@class, 'price-promo')]";
 		promotionName=getText(locator);

@@ -2,6 +2,8 @@ package scenarios;
 
 import mwPages.DepartmentNavigation;
 import mwPages.ProductGridPage;
+
+import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -84,9 +86,9 @@ public class AllDepartmentPDPVerificationTest extends PopupWindows
 			createObjects(browser);
 
 			selectUSFlag();
-			
+
 			homePage.ClickonHomePageLogo();
-			
+
 			String projectDirectory = System.getProperty("user.dir");
 
 			String filePath = projectDirectory+"\\DepartmentPDPUrl\\AllDepartmentPDPUrlReport.xls";

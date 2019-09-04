@@ -18,6 +18,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 
 /*import jxl.Cell;
 import jxl.read.biff.BiffException;
@@ -290,12 +291,17 @@ public class ApplicationKeywords extends APIKeywords
 	public void scrollbottomofPage() 
 	{
 		((JavascriptExecutor) driver)
-	     .executeScript("window.scrollTo(0, document.body.scrollHeight)");
+		.executeScript("window.scrollTo(0, document.body.scrollHeight)");
 	}
 
 
 
-
+	public void mouseHover(String xpath) 
+	{
+		Actions actions = new Actions(driver);
+		WebElement menuOption = driver.findElement(By.xpath(xpath));
+		actions.moveToElement(menuOption).perform();
+	}
 
 
 
