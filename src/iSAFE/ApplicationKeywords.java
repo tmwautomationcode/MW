@@ -17,6 +17,7 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 
@@ -303,6 +304,35 @@ public class ApplicationKeywords extends APIKeywords
 		actions.moveToElement(menuOption).perform();
 	}
 
-
-
+	
+	
+	public void escKey() 
+	{
+		Actions action = new Actions(driver);
+		
+		action.sendKeys(Keys.ESCAPE).perform();
+	}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 }

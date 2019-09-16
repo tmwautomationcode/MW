@@ -84,6 +84,10 @@ public class ColorSwatchVerificationTest extends PopupWindows
 			homePage.ClickonHomePageLogo();
 			
 			waitTime(2);
+			
+			homePage.submitFeedbackForm("Make a purchase", "Navigation");
+			
+			//homePage.submitFeedbackFormFromFooter("Make a purchase", "Navigation");
 
 			String departmentName = retrieve("DepartmentName");
 
@@ -92,7 +96,6 @@ public class ColorSwatchVerificationTest extends PopupWindows
 			testStepInfo("Department Name : "+departmentName);
 			
 			testStepInfo("SubCategory Name : "+subCategoryName);
-			
 
 			String department = "(//a[contains(@id,'TopCategoryLink') and contains(text(),'"+departmentName+"')])[1]";
 

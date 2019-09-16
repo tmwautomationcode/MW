@@ -1098,14 +1098,140 @@ public class HomePage extends PopupWindows
 	
 	
 	
+	public static final String lnk_FeedbackFormButtonFromFooter = "Feedback Form Footer Link#xpath=(//footer[@id='pg-footer']//a[contains(text(),'Feedback')])[3]";
+	public static final String lnk_FeedbackFormButton = "Feedback Form Link#xpath=//button[contains(@id,'nebula_div_btn')]";
+	public static final String radio_FeedbackForm_TypeofFeedback = "Type of Feedback radiobutton in Feedback Form#xpath=//div[contains(@class,'live-form-content')]//div[contains(@class,'neb-content')]//md-radio-button[contains(@aria-label,'Website')]";
+	public static final String radio_FeedbackForm_Question1_Rating = "Question 1 rating in Feedback Form#xpath=(//div[contains(@class,'live-form-content')]//div[contains(@class,'neb-content')]//div[contains(@class,'neb-rating numbersSquare')]//label[contains(@data-rating-value,'10')])[1]";
+	public static final String radio_FeedbackForm_Question2_Rating = "Question 2 rating in Feedback Form#xpath=(//div[contains(@class,'live-form-content')]//div[contains(@class,'neb-content')]//div[contains(@class,'neb-rating numbersSquare')]//label[contains(@data-rating-value,'10')])[2]";
+	public static final String drp_FeedbackForm_Purpose = "Purpose of Meeting Dropdown#xpath=(//div[contains(@class,'live-form-content')]//div[contains(@class,'neb-content')]//select)[1]";
+	public static final String radio_FeedbackForm_WhatLookingToday = "What Looking Today Radiobutton#xpath=//div[contains(@class,'live-form-content')]//div[contains(@class,'neb-content')]//md-radio-button[contains(@aria-label,'Were you able to find what you were looking for today?:Yes')]//div";
+	public static final String radio_FeedbackForm_SiteIssueToday = "Site Issue Today Radiobutton#xpath=//div[contains(@class,'live-form-content')]//div[contains(@class,'neb-content')]//md-radio-button[contains(@aria-label,'Did you experience a site issue today?:Yes')]";
+	public static final String drp_FeedbackForm_ExperienceToday = "Experience Today Radiobutton#xpath=(//div[contains(@class,'live-form-content')]//div[contains(@class,'neb-content')]//select)[2]";
+	public static final String btn_FeedbackForm_Submit = "Feedback Form Submit Button#xpath=//div[contains(@class,'live-form-content')]//button[contains(@class,'btn submit')]";
+	public static final String btn_FeedbackForm_Submitted_Close = "Feedback Form Submitted Close Button#xpath//div[contains(@class,'previewModal ng-scope')]//button[contains(@aria-label,'Exit')]";
 	
 	
+	public void submitFeedbackForm(String pupose, String experienceToday)
+	{
+		try 
+		{
+			clickOn(lnk_FeedbackFormButton);
+			
+			waitTime(4);
+			
+			WebElement fr = driver.findElement(By.xpath("//iframe[contains(@id,'kampyle')]"));
+			
+			driver.switchTo().frame(fr);
+			
+			System.out.println("switched to frame");
+			
+			/*if (driver.findElement(By.xpath("//div[contains(@class,'live-form-content')]//span[contains(text(),'Help us improve our site')]")).isDisplayed()) 
+			{
+				*/testStepPassed("Feedback Form is displayed");
+				
+				clickOn(radio_FeedbackForm_TypeofFeedback);
+				
+				clickOn(radio_FeedbackForm_Question1_Rating);
+				
+				clickOn(radio_FeedbackForm_Question2_Rating);
+				
+				selectFromDropdown(drp_FeedbackForm_Purpose, pupose);
+				
+				clickOn(radio_FeedbackForm_WhatLookingToday);
+				
+				clickOn(radio_FeedbackForm_SiteIssueToday);
+				
+				selectFromDropdown(drp_FeedbackForm_ExperienceToday, experienceToday);
+				
+				clickOn(btn_FeedbackForm_Submit);
+				
+				waitTime(4);
+				
+				if (driver.findElement(By.xpath("//div[contains(@id,'thankYouPageText')]")).isDisplayed()) 
+				{
+					testStepPassed("Feedback Form is submitted ");
+					
+					escKey();
+				}
+				else 
+				{
+					testStepFailed("Feedback Form is not displayed");				
+				}
+			/*} 
+			else 
+			{
+				testStepFailed("Feedback Form is not displayed");
+			}*/
+		} 
+		catch (Exception e) 
+		{
+			testStepInfo("Fedback Form Link is not displayed");
+		}
+	}
 	
 	
-	
-	
-	
-	
+	public void submitFeedbackFormFromFooter(String pupose, String experienceToday)
+	{
+		try 
+		{
+			waitTime(2);
+			scrollbottomofPage();
+			waitTime(2);
+			scrollbottomofPage();
+			
+			clickOn(lnk_FeedbackFormButtonFromFooter);
+			
+			waitTime(3);
+			
+			WebElement fr = driver.findElement(By.xpath("//iframe[contains(@id,'kampyle')]"));
+			
+			driver.switchTo().frame(fr);
+			
+			System.out.println("switched to frame");
+			
+			/*if (driver.findElement(By.xpath("live-form-content")).isDisplayed()) 
+			{
+				*/testStepPassed("Feedback Form is displayed");
+				
+				clickOn(radio_FeedbackForm_TypeofFeedback);
+				
+				clickOn(radio_FeedbackForm_Question1_Rating);
+				
+				clickOn(radio_FeedbackForm_Question2_Rating);
+				
+				selectFromDropdown(drp_FeedbackForm_Purpose, pupose);
+				
+				clickOn(radio_FeedbackForm_WhatLookingToday);
+				
+				clickOn(radio_FeedbackForm_SiteIssueToday);
+				
+				selectFromDropdown(drp_FeedbackForm_ExperienceToday, experienceToday);
+				
+				clickOn(btn_FeedbackForm_Submit);
+				
+				waitTime(4);
+				
+				if (driver.findElement(By.xpath("//div[contains(@id,'thankYouPageText')]")).isDisplayed()) 
+				{
+					testStepPassed("Feedback Form is submitted ");
+					
+					escKey();
+				}
+				else 
+				{
+					testStepFailed("Feedback Form is not displayed");				
+				}
+				/*} 
+			else 
+			{
+				testStepFailed("Feedback Form is not displayed");
+			}*/
+		} 
+		catch (Exception e) 
+		{
+			testStepInfo("Fedback Form Footer Link is not displayed");
+		}
+	}
 
 }
 

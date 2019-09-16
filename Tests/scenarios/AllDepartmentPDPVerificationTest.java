@@ -104,6 +104,8 @@ public class AllDepartmentPDPVerificationTest extends PopupWindows
 			Sheet sh = wb.getSheet(0);
 
 			int rowsCount=sh.getRows();
+			
+			//homePage.submitFeedbackForm("Make a purchase", "Navigation");
 
 			//System.out.println("Total No of rows : "+rowsCount);
 

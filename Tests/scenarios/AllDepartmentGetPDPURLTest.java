@@ -100,6 +100,8 @@ public class AllDepartmentGetPDPURLTest extends PopupWindows
 			int m = EndDepartment;
 
 			String DepartName = null;
+			
+			homePage.submitFeedbackForm("Make a purchase", "Navigation");
 
 			/*verifyUSFlagSelected();
 
@@ -162,6 +164,18 @@ public class AllDepartmentGetPDPURLTest extends PopupWindows
 			testStepPassed("Total Sub Categories Links Count : "+SubCategoriesCount);
 
 
+			
+			
+			
+			
+			//homePage.submitFeedbackForm("Make a purchase", "Navigation");
+			
+			
+			
+			
+			
+			
+			
 			testStepPassed("");
 			testStepInfo("Departments going to be Executed");
 			testStepInfo("*****************************************");
